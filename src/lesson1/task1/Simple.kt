@@ -56,7 +56,6 @@ fun main() {
     val x1x2 = quadraticRootProduct(1.0, 13.0, 42.0)
     println("Root product: $x1x2")
 }
-
 /**
  * Тривиальная (3 балла).
  *
@@ -98,7 +97,7 @@ fun trackLength(x1: Double, y1: Double, x2: Double, y2: Double): Double = sqrt((
  * Пользователь задает целое число, большее 100 (например, 3801).
  * Определить третью цифру справа в этом числе (в данном случае 8).
  */
-fun thirdDigit(number: Int): Int = TODO()
+fun thirdDigit(number: Int): Int = ((number % 1000) - (number % 100)) / 100
 
 /**
  * Простая (2 балла)
@@ -107,7 +106,7 @@ fun thirdDigit(number: Int): Int = TODO()
  * прибыл на станцию назначения в h2 часов m2 минут того же дня (например в 13:01).
  * Определите время поезда в пути в минутах (в данном случае 216).
  */
-fun travelMinutes(hoursDepart: Int, minutesDepart: Int, hoursArrive: Int, minutesArrive: Int): Int = TODO()
+fun travelMinutes(hoursDepart: Int, minutesDepart: Int, hoursArrive: Int, minutesArrive: Int): Int = ((hoursArrive - hoursDepart) * 60) + (minutesArrive - minutesDepart)
 
 /**
  * Простая (2 балла)
@@ -124,4 +123,4 @@ fun accountInThreeYears(initial: Int, percent: Int): Double = initial * ((1.0+ p
  * Пользователь задает целое трехзначное число (например, 478).
  * Необходимо вывести число, полученное из заданного перестановкой цифр в обратном порядке (например, 874).
  */
-fun numberRevert(number: Int): Int = TODO()
+fun numberRevert(number: Int): Int = (number % 10 * 100) + (number % 100 - number % 10) + ((number - number % 100) / 100)
