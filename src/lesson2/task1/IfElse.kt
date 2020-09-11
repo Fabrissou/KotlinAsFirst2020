@@ -68,7 +68,10 @@ fun minBiRoot(a: Double, b: Double, c: Double): Double {
  * Мой возраст. Для заданного 0 < n < 200, рассматриваемого как возраст человека,
  * вернуть строку вида: «21 год», «32 года», «12 лет».
  */
-fun ageDescription(age: Int): String = TODO()
+fun ageDescription(age: Int): String = if (age % 100 in 10..19) "$age лет" else
+    if (age % 10 in 5..9) "$age лет"
+    else if (age % 10 in 2..4) "$age года"
+    else "$age год"
 
 /**
  * Простая (2 балла)
@@ -96,7 +99,12 @@ fun whichRookThreatens(
     kingX: Int, kingY: Int,
     rookX1: Int, rookY1: Int,
     rookX2: Int, rookY2: Int
-): Int = TODO()
+): Int =
+//Сначала проверим одновременную угрозу от двух ладей,потом отдельно угорзу от 1 и 2
+    if (((kingX == rookX1) || (kingY == rookY1)) && ((kingX == rookX2) || (kingY == rookY2))) 3
+    else if ((kingX == rookX1) || (kingY == rookY1)) 1
+    else if ((kingX == rookX2) || (kingY == rookY2)) 2
+    else 0
 
 /**
  * Простая (2 балла)
@@ -122,7 +130,10 @@ fun rookOrBishopThreatens(
  * прямоугольным (вернуть 1) или тупоугольным (вернуть 2).
  * Если такой треугольник не существует, вернуть -1.
  */
-fun triangleKind(a: Double, b: Double, c: Double): Int = TODO()
+fun triangleKind(a: Double, b: Double, c: Double): Int = if ((a+b < c) || (a+c < b) || (b+c < a)) -1
+else if ((a*a+b*b == c*c) || (a*a + c*c == b*b) || (c*c+b*b == a*a)) 1
+else if ((a*a+b*b < c*c) || (a*a + c*c < b*b) || (c*c+b*b < a*a)) 2
+else 0
 
 /**
  * Средняя (3 балла)
