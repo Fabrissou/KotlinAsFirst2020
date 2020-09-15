@@ -74,8 +74,6 @@ else if (age % 10 in 2..4) "$age года"
 else "$age год"
 
 
-
-
 /**
  * Простая (2 балла)
  *
@@ -151,4 +149,8 @@ else 0
  * Найти длину пересечения отрезков AB и CD.
  * Если пересечения нет, вернуть -1.
  */
-fun segmentLength(a: Int, b: Int, c: Int, d: Int): Int = TODO()
+fun segmentLength(a: Int, b: Int, c: Int, d: Int): Int = if (c <= b)
+    (if (d >= b) if (a >= c) b - a else b - c
+    else if (d >= a) if (c >= a) d - c else d - a
+    else -1)
+else -1
