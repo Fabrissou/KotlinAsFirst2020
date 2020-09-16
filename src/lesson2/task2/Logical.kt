@@ -4,6 +4,7 @@ package lesson2.task2
 
 import lesson1.task1.sqr
 import kotlin.math.abs
+import kotlin.math.min as min
 
 /**
  * Пример
@@ -19,7 +20,8 @@ fun pointInsideCircle(x: Double, y: Double, x0: Double, y0: Double, r: Double) =
  * Четырехзначное число назовем счастливым, если сумма первых двух ее цифр равна сумме двух последних.
  * Определить, счастливое ли заданное число, вернуть true, если это так.
  */
-fun isNumberHappy(number: Int): Boolean = ((number % 100 - number % 10) / 10 + number % 10) == (number / 1000 + (number / 100) % 10)
+fun isNumberHappy(number: Int): Boolean =
+    ((number % 100 - number % 10) / 10 + number % 10) == (number / 1000 + (number / 100) % 10)
 
 /**
  * Простая (2 балла)
@@ -28,7 +30,8 @@ fun isNumberHappy(number: Int): Boolean = ((number % 100 - number % 10) / 10 + n
  * Определить, угрожают ли они друг другу. Вернуть true, если угрожают.
  * Считать, что ферзи не могут загораживать друг друга.
  */
-fun queenThreatens(x1: Int, y1: Int, x2: Int, y2: Int): Boolean = (x1 == x2) or (y1 == y2) or (abs(x1 - x2) == abs(y1 - y2))
+fun queenThreatens(x1: Int, y1: Int, x2: Int, y2: Int): Boolean =
+    (x1 == x2) or (y1 == y2) or (abs(x1 - x2) == abs(y1 - y2))
 
 
 /**
@@ -53,7 +56,7 @@ else if (month == 2) 28 else (30 + month % 2)
 fun circleInside(
     x1: Double, y1: Double, r1: Double,
     x2: Double, y2: Double, r2: Double
-): Boolean = if (r2 >= r1) (abs(x1 - x2) <= r2 - r1) && (abs(y1 - y2) <= r2 - r1) else false
+): Boolean = if (r2 >= r1) ((abs(x2 - x1) + abs(y2 - y1)) <= r2 - r1) else false
 
 
 /**
@@ -65,4 +68,15 @@ fun circleInside(
  * кирпич 4 х 4 х 4 пройдёт через отверстие 4 х 4.
  * Вернуть true, если кирпич пройдёт
  */
-fun brickPasses(a: Int, b: Int, c: Int, r: Int, s: Int): Boolean = TODO()
+
+fun brickPasses(a: Int, b: Int, c: Int, r: Int, s: Int): Boolean =
+    if (s <= r) if (a <= s) (b <= r) || (c <= r)
+    else if (b <= s) (a <= r) || (c <= r)
+    else if (c <= s) (a <= r) || (b <= r) else false
+    else if (a <= r) (b <= s) || (c <= s)
+    else if (b <= r) (a <= s) || (c <= s)
+    else if (c <= r) (a <= s) || (b <= s) else false
+
+
+
+
