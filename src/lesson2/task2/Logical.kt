@@ -56,7 +56,7 @@ else if (month == 2) 28 else (30 + month % 2)
 fun circleInside(
     x1: Double, y1: Double, r1: Double,
     x2: Double, y2: Double, r2: Double
-): Boolean = if (r2 >= r1) ((abs(x2 - x1) + abs(y2 - y1)) <= r2 - r1) else false
+): Boolean = if (r2 >= r1) ((sqr(x2 - x1) + sqr(y2 - y1)) <= sqr(r2 - r1)) else false
 
 
 /**
@@ -70,12 +70,20 @@ fun circleInside(
  */
 
 fun brickPasses(a: Int, b: Int, c: Int, r: Int, s: Int): Boolean =
-    if (s <= r) if (a <= s) (b <= r) || (c <= r)
-    else if (b <= s) (a <= r) || (c <= r)
-    else if (c <= s) (a <= r) || (b <= r) else false
-    else if (a <= r) (b <= s) || (c <= s)
-    else if (b <= r) (a <= s) || (c <= s)
-    else if (c <= r) (a <= s) || (b <= s) else false
+    when {
+        s <= r -> {
+            when {
+                a <= s -> (b <= r) || (c <= r)
+                b <= s -> (a <= r) || (c <= r)
+                c <= s -> (a <= r) || (b <= r)
+                else -> false
+            }
+        }
+        a <= r -> (b <= s) || (c <= s)
+        b <= r -> (a <= s) || (c <= s)
+        c <= r -> (a <= s) || (b <= s)
+        else -> false
+    }
 
 
 
