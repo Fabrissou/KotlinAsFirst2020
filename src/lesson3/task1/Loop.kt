@@ -2,6 +2,7 @@
 
 package lesson3.task1
 
+import lesson1.task1.sqr
 import kotlin.math.sqrt
 
 // Урок 3: циклы
@@ -72,7 +73,15 @@ fun digitCountInNumber(n: Int, m: Int): Int =
  *
  * Использовать операции со строками в этой задаче запрещается.
  */
-fun digitNumber(n: Int): Int = TODO()
+fun digitNumber(n: Int): Int {
+    var x = 0
+    var num = n
+    while (num >= 0) {
+        x++
+        num /= 10
+    }
+    return x
+}
 
 /**
  * Простая (2 балла)
@@ -80,7 +89,7 @@ fun digitNumber(n: Int): Int = TODO()
  * Найти число Фибоначчи из ряда 1, 1, 2, 3, 5, 8, 13, 21, ... с номером n.
  * Ряд Фибоначчи определён следующим образом: fib(1) = 1, fib(2) = 1, fib(n+2) = fib(n) + fib(n+1)
  */
-fun fib(n: Int): Int = TODO()
+fun fib(n: Int): Int = if (n < 3) 1 else fib(n - 2) + fib(n - 1)
 
 /**
  * Простая (2 балла)
@@ -147,7 +156,16 @@ fun squareBetweenExists(m: Int, n: Int): Boolean = TODO()
  *
  * Использовать операции со строками в этой задаче запрещается.
  */
-fun revert(n: Int): Int = TODO()
+
+fun revert(n: Int): Int {
+    var num = n
+    var reversNum = 0
+    while (num > 0) {
+        reversNum = reversNum * 10 + num % 10
+        num /= 10
+    }
+    return reversNum
+}
 
 /**
  * Средняя (3 балла)
@@ -158,7 +176,16 @@ fun revert(n: Int): Int = TODO()
  *
  * Использовать операции со строками в этой задаче запрещается.
  */
-fun isPalindrome(n: Int): Boolean = TODO()
+
+fun isPalindrome(n: Int): Boolean {
+    var num = n
+    var reversNum = 0
+    while (num > 0) {
+        reversNum = reversNum * 10 + num % 10
+        num /= 10
+    }
+    return n == reversNum
+}
 
 /**
  * Средняя (3 балла)
@@ -168,7 +195,22 @@ fun isPalindrome(n: Int): Boolean = TODO()
  *
  * Использовать операции со строками в этой задаче запрещается.
  */
-fun hasDifferentDigits(n: Int): Boolean = TODO()
+
+fun hasDifferentDigits(n: Int): Boolean {
+    var trueOrFalse = true
+    var num: Int = n
+    var digit: Int
+    while (num > 0) {
+        digit = num % 10
+        if (digit == (num % 100 - digit) / 10) trueOrFalse = false
+        else {
+            trueOrFalse = true
+            break
+        }
+        num /= 10
+    }
+    return trueOrFalse
+}
 
 /**
  * Средняя (4 балла)
