@@ -197,20 +197,22 @@ fun isPalindrome(n: Int): Boolean {
  */
 
 fun hasDifferentDigits(n: Int): Boolean {
-    var trueOrFalse = true
-    var num: Int = n
+    var trueOrFalse = false
+    var num = n
     var digit: Int
-    while (num > 0) {
+    while (num > 10) {
         digit = num % 10
-        if (digit == (num % 100 - digit) / 10) trueOrFalse = false
-        else {
+        if (digit != (num % 100 - digit) / 10) {
             trueOrFalse = true
             break
-        }
+        } else
+            trueOrFalse = false
         num /= 10
     }
     return trueOrFalse
 }
+
+
 
 /**
  * Средняя (4 балла)
