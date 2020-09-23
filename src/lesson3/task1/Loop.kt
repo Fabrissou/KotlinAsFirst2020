@@ -73,13 +73,14 @@ fun digitCountInNumber(n: Int, m: Int): Int =
  *
  * Использовать операции со строками в этой задаче запрещается.
  */
+
 fun digitNumber(n: Int): Int {
     var x = 0
     var num = n
-    while (num >= 0) {
+    do {
         x++
         num /= 10
-    }
+    } while (num > 0)
     return x
 }
 
@@ -89,7 +90,19 @@ fun digitNumber(n: Int): Int {
  * Найти число Фибоначчи из ряда 1, 1, 2, 3, 5, 8, 13, 21, ... с номером n.
  * Ряд Фибоначчи определён следующим образом: fib(1) = 1, fib(2) = 1, fib(n+2) = fib(n) + fib(n+1)
  */
-fun fib(n: Int): Int = if (n < 3) 1 else fib(n - 2) + fib(n - 1)
+fun fib(n: Int): Int {
+    var f1 = 1
+    var f2 = 1
+    var f = 0
+    if (n < 3) return f1
+    else for (i in 3..n) {
+        f = f1 + f2
+        f1 = f2
+        f2 = f
+    }
+    return f
+}
+
 
 /**
  * Простая (2 балла)
@@ -177,15 +190,7 @@ fun revert(n: Int): Int {
  * Использовать операции со строками в этой задаче запрещается.
  */
 
-fun isPalindrome(n: Int): Boolean {
-    var num = n
-    var reversNum = 0
-    while (num > 0) {
-        reversNum = reversNum * 10 + num % 10
-        num /= 10
-    }
-    return n == reversNum
-}
+fun isPalindrome(n: Int): Boolean = n == revert(n)
 
 /**
  * Средняя (3 балла)
@@ -197,19 +202,12 @@ fun isPalindrome(n: Int): Boolean {
  */
 
 fun hasDifferentDigits(n: Int): Boolean {
-    var trueOrFalse = false
-    var num = n
-    var digit: Int
-    while (num > 10) {
-        digit = num % 10
-        if (digit != (num % 100 - digit) / 10) {
-            trueOrFalse = true
-            break
-        } else
-            trueOrFalse = false
-        num /= 10
+    val firstDigit = n % 10
+    var num = n / 10
+    while (num > 0) {
+        if (firstDigit != num % 10) return true else num /= 10
     }
-    return trueOrFalse
+    return false
 }
 
 
@@ -244,21 +242,12 @@ fun cos(x: Double, eps: Double): Double = TODO()
  *
  * Использовать операции со строками в этой задаче запрещается.
  */
-//создаём две вспомогательные функции numberOfDigit(Ищет кол-во цифр в числе) и numberInDigit(Ищет цифру под определённым
-//номером). Дальше из n вычитаем по одной цифре, пока n не станет равна еденице.
+// создадим вспомогательную функцию, которая будет искать цифру в числе по заданному номеру.
+// и воспользуемся другой фукцией, которая ищет кол-во цифр в числе
+
 fun squareSequenceDigit(n: Int): Int {
 
-    fun numberOfDigit(x: Int): Int {
-        var y = x
-        var k = 0
-        while (y > 0) {
-            k++
-            y /= 10
-        }
-        return k
-    }
-
-    fun numberInDigit(l: Int, j: Int): Int {
+    fun digitInNumber(l: Int, j: Int): Int {
         var m = j
         var f = 1
         for (i in 1..l) f *= 10
@@ -274,11 +263,11 @@ fun squareSequenceDigit(n: Int): Int {
     var answer = 0
     while (count > 0) {
         j++
-        numberOfDigits = numberOfDigit(sqr(j))
+        numberOfDigits = digitNumber(sqr(j))
         for (i in 1..numberOfDigits) {
             if (count > 1) count--
             else {
-                answer = numberInDigit(i, sqr(j))
+                answer = digitInNumber(i, sqr(j))
                 count--
                 break
             }
