@@ -245,18 +245,17 @@ fun cos(x: Double, eps: Double): Double = TODO()
 // создадим вспомогательную функцию, которая будет искать цифру в числе по заданному номеру.
 // и воспользуемся другой фукцией, которая ищет кол-во цифр в числе
 
-fun squareSequenceDigit(n: Int): Int {
-
-    fun digitInNumber(l: Int, j: Int): Int {
-        var m = j
-        var f = 1
-        for (i in 1..l) f *= 10
-        while (m > f) {
-            m /= 10
-        }
-        return (m % 10)
+fun digitInNumber(l: Int, j: Int): Int {
+    var m = j
+    var f = 1
+    for (i in 1..l) f *= 10
+    while (m > f) {
+        m /= 10
     }
+    return (m % 10)
+}
 
+fun squareSequenceDigit(n: Int): Int {
     var count = n
     var numberOfDigits: Int
     var j = 0
@@ -285,4 +284,23 @@ fun squareSequenceDigit(n: Int): Int {
  *
  * Использовать операции со строками в этой задаче запрещается.
  */
-fun fibSequenceDigit(n: Int): Int = TODO()
+
+fun fibSequenceDigit(n: Int): Int {
+    var count = n
+    var j= 0
+    var fibNumber: Int
+    var answer = 0
+    while (count > 0) {
+        j++
+        fibNumber = digitNumber(fib(j))
+        for (i in 1..fibNumber) {
+            if (count > 1) count--
+            else {
+                answer = digitInNumber(i, fib(j))
+                count--
+                break
+            }
+        }
+    }
+    return answer
+}
