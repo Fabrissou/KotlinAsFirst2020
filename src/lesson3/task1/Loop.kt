@@ -213,7 +213,6 @@ fun hasDifferentDigits(n: Int): Boolean {
 }
 
 
-
 /**
  * Средняя (4 балла)
  *
@@ -245,7 +244,48 @@ fun cos(x: Double, eps: Double): Double = TODO()
  *
  * Использовать операции со строками в этой задаче запрещается.
  */
-fun squareSequenceDigit(n: Int): Int = TODO()
+//создаём две вспомогательные функции numberOfDigit(Ищет кол-во цифр в числе) и numberInDigit(Ищет цифру под определённым
+//номером). Дальше из n вычитаем по одной цифре, пока n не станет равна еденице.
+fun squareSequenceDigit(n: Int): Int {
+
+    fun numberOfDigit(x: Int): Int {
+        var y = x
+        var k = 0
+        while (y > 0) {
+            k++
+            y /= 10
+        }
+        return k
+    }
+
+    fun numberInDigit(l: Int, j: Int): Int {
+        var m = j
+        var f = 1
+        for (i in 1..l) f *= 10
+        while (m > f) {
+            m /= 10
+        }
+        return (m % 10)
+    }
+
+    var count = n
+    var numberOfDigits: Int
+    var j = 0
+    var answer = 0
+    while (count > 0) {
+        j++
+        numberOfDigits = numberOfDigit(sqr(j))
+        for (i in 1..numberOfDigits) {
+            if (count > 1) count--
+            else {
+                answer = numberInDigit(i, sqr(j))
+                count--
+                break
+            }
+        }
+    }
+    return answer
+}
 
 /**
  * Сложная (5 баллов)
