@@ -288,7 +288,7 @@ fun squareSequenceDigit(n: Int): Int {
 
 fun fibSequenceDigit(n: Int): Int {
     var count = n
-    var j= 0
+    var j = 0
     var fibNumber: Int
     var answer = 0
     while (count > 0) {
