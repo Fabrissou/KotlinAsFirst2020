@@ -121,22 +121,14 @@ fun buildSumExample(list: List<Int>) = list.joinToString(separator = " + ", post
  * по формуле abs = sqrt(a1^2 + a2^2 + ... + aN^2).
  * Модуль пустого вектора считать равным 0.0.
  */
-fun abs(v: List<Double>): Double {
-    var answer = 0.0
-    for (i in v)
-        answer += sqr(i)
-    return sqrt(answer)
-}
+fun abs(v: List<Double>): Double = TODO()
 
 /**
  * Простая (2 балла)
  *
  * Рассчитать среднее арифметическое элементов списка list. Вернуть 0.0, если список пуст
  */
-fun mean(list: List<Double>): Double {
-    return if (list.isEmpty()) 0.0
-    else list.sum() / list.size
-}
+fun mean(list: List<Double>): Double = TODO()
 
 /**
  * Средняя (3 балла)
@@ -146,13 +138,7 @@ fun mean(list: List<Double>): Double {
  *
  * Обратите внимание, что данная функция должна изменять содержание списка list, а не его копии.
  */
-fun center(list: MutableList<Double>): MutableList<Double> {
-    val d = mean(list)
-    for ((index) in list.withIndex()) {
-        list[index] -= d
-    }
-    return list
-}
+fun center(list: MutableList<Double>): MutableList<Double> = TODO()
 
 /**
  * Средняя (3 балла)
@@ -183,14 +169,7 @@ fun polynom(p: List<Int>, x: Int): Int = TODO()
  *
  * Обратите внимание, что данная функция должна изменять содержание списка list, а не его копии.
  */
-fun accumulate(list: MutableList<Int>): MutableList<Int> {
-    var sumPred = 0
-    for ((index, element) in list.withIndex()) {
-        list[index] += sumPred
-        sumPred += element
-    }
-    return list
-}
+fun accumulate(list: MutableList<Int>): MutableList<Int> = TODO()
 
 /**
  * Средняя (3 балла)
@@ -217,16 +196,7 @@ fun factorizeToString(n: Int): String = TODO()
  * Результат перевода вернуть в виде списка цифр в base-ичной системе от старшей к младшей,
  * например: n = 100, base = 4 -> (1, 2, 1, 0) или n = 250, base = 14 -> (1, 3, 12)
  */
-fun convert(n: Int, base: Int): List<Int> {
-    var num = n
-    var list = mutableListOf<Int>()
-    while (n > 0) {
-        list.add(num % base)
-        num /= base
-    }
-    list.sortedDescending()
-    return list
-}
+fun convert(n: Int, base: Int): List<Int> = TODO()
 
 /**
  * Сложная (4 балла)
