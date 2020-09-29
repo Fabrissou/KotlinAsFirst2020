@@ -260,20 +260,15 @@ fun squareSequenceDigit(n: Int): Int {
     var count = n
     var numberOfDigits: Int
     var j = 0
-    var answer = 0
+    var m = 0
     while (count > 0) {
         j++
         numberOfDigits = digitNumber(sqr(j))
-        for (i in 1..numberOfDigits) {
-            if (count > 1) count--
-            else {
-                answer = digitInNumber(i, sqr(j))
-                count--
-                break
-            }
-        }
+        count -= numberOfDigits
+        if (count <= 0) break
+        m += numberOfDigits
     }
-    return answer
+    return digitInNumber((n - m), (sqr(j)))
 }
 
 /**
@@ -289,19 +284,19 @@ fun squareSequenceDigit(n: Int): Int {
 fun fibSequenceDigit(n: Int): Int {
     var count = n
     var j = 0
+    var m = 0
     var fibNumber: Int
-    var answer = 0
     while (count > 0) {
         j++
         fibNumber = digitNumber(fib(j))
-        for (i in 1..fibNumber) {
-            if (count > 1) count--
-            else {
-                answer = digitInNumber(i, fib(j))
-                count--
-                break
-            }
-        }
+        count -= fibNumber
+        if (count <= 0) break
+        m += fibNumber
     }
-    return answer
+    return digitInNumber((n - m), (fib(j)))
 }
+
+
+
+
+
