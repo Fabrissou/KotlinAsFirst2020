@@ -6,6 +6,7 @@ import lesson1.task1.sqr
 import kotlin.math.abs
 import kotlin.math.sqrt
 
+
 // Урок 3: циклы
 // Максимальное количество баллов = 9
 // Рекомендуемое количество баллов = 7
@@ -248,9 +249,9 @@ fun cos(x: Double, eps: Double): Double = TODO()
 
 fun digitInNumber(l: Int, j: Int): Int {
     var m = j
-    var f = 1
+    var f: Long = 1
     for (i in 1..l) f *= 10
-    while (m > f) {
+    while (m >= f) {
         m /= 10
     }
     return (m % 10)
@@ -258,12 +259,11 @@ fun digitInNumber(l: Int, j: Int): Int {
 
 fun squareSequenceDigit(n: Int): Int {
     var count = n
-    var numberOfDigits: Int
     var j = 0
     var m = 0
     while (count > 0) {
         j++
-        numberOfDigits = digitNumber(sqr(j))
+        val numberOfDigits = digitNumber(sqr(j))
         count -= numberOfDigits
         if (count <= 0) break
         m += numberOfDigits
