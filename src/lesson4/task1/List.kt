@@ -4,6 +4,7 @@ package lesson4.task1
 
 import lesson1.task1.discriminant
 import lesson1.task1.sqr
+import lesson3.task1.revert
 import kotlin.math.sqrt
 
 // Урок 4: списки
@@ -169,7 +170,14 @@ fun polynom(p: List<Int>, x: Int): Int = TODO()
  *
  * Обратите внимание, что данная функция должна изменять содержание списка list, а не его копии.
  */
-fun accumulate(list: MutableList<Int>): MutableList<Int> = TODO()
+fun accumulate(list: MutableList<Int>): MutableList<Int> {
+    var sumPred = 0
+    for ((index, element) in list.withIndex()) {
+        list[index] += sumPred
+        sumPred += element
+    }
+    return list
+}
 
 /**
  * Средняя (3 балла)
@@ -196,7 +204,16 @@ fun factorizeToString(n: Int): String = TODO()
  * Результат перевода вернуть в виде списка цифр в base-ичной системе от старшей к младшей,
  * например: n = 100, base = 4 -> (1, 2, 1, 0) или n = 250, base = 14 -> (1, 3, 12)
  */
-fun convert(n: Int, base: Int): List<Int> = TODO()
+fun convert(n: Int, base: Int): List<Int> {
+    var num = n
+    val list = mutableListOf<Int>()
+    while (num > 0) {
+        list.add(num % base)
+        num /= base
+    }
+    list.reverse()
+    return list
+}
 
 /**
  * Сложная (4 балла)
