@@ -230,8 +230,17 @@ fun convert(n: Int, base: Int): List<Int> {
  * Использовать функции стандартной библиотеки, напрямую и полностью решающие данную задачу
  * (например, n.toString(base) и подобные), запрещается.
  */
-fun convertToString(n: Int, base: Int): String = TODO()
-
+fun convertToString(n: Int, base: Int): String {
+    var string1 = "0123456789"
+    var string2 = ""
+    var num = n
+    for (i in 'a'..'z') string1 += i
+    while (num > 0) {
+        string2 = string1[num % base] + string2
+        num /= base
+    }
+    return string2
+}
 /**
  * Средняя (3 балла)
  *
@@ -253,7 +262,13 @@ fun decimal(digits: List<Int>, base: Int): Int = TODO()
  * Использовать функции стандартной библиотеки, напрямую и полностью решающие данную задачу
  * (например, str.toInt(base)), запрещается.
  */
-fun decimalFromString(str: String, base: Int): Int = TODO()
+fun decimalFromString(str: String, base: Int): Int {
+    var string: String = str
+    var answer = 0
+    for (i in string.indices) {
+        answer += (string.last().toInt()) * base
+    }
+}
 
 /**
  * Сложная (5 баллов)
