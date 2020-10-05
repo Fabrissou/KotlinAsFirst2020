@@ -235,13 +235,16 @@ fun convertToString(n: Int, base: Int): String {
     var string1 = "0123456789"
     var string2 = ""
     var num = n
+    if (n == 0) return string2 + 0
+    else {
     for (i in 'a'..'z') string1 += i
     while (num > 0) {
         string2 = string1[num % base] + string2
         num /= base
-    }
+    }}
     return string2
 }
+
 /**
  * Средняя (3 балла)
  *
