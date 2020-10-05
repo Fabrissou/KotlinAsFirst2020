@@ -209,7 +209,8 @@ fun convert(n: Int, base: Int): List<Int> {
     val list = mutableListOf<Int>()
     if (n == 0) {
         list.add(0)
-        return list}
+        return list
+    }
     else {
     while (num > 0) {
         list.add(num % base)
@@ -262,13 +263,7 @@ fun decimal(digits: List<Int>, base: Int): Int = TODO()
  * Использовать функции стандартной библиотеки, напрямую и полностью решающие данную задачу
  * (например, str.toInt(base)), запрещается.
  */
-fun decimalFromString(str: String, base: Int): Int {
-    var string: String = str
-    var answer = 0
-    for (i in string.indices) {
-        answer += (string.last().toInt()) * base
-    }
-}
+fun decimalFromString(str: String, base: Int): Int = TODO()
 
 /**
  * Сложная (5 баллов)
