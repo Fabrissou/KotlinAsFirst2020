@@ -285,5 +285,34 @@ fun roman(n: Int): String = TODO()
  * Например, 375 = "триста семьдесят пять",
  * 23964 = "двадцать три тысячи девятьсот шестьдесят четыре"
  */
-fun russian(n: Int): String = TODO()
-
+fun russian(n: Int): String {
+    val listOne = listOf(" ", "один", "два", "три", "четыре", "пять", "шесть", "семь", "восемь", "девять",
+            "десять", "одиннадцать", "двенадцать", "тринадцать", "четырнадцать", "пятнадцать", "шестнадцать",
+            "семнадцать", "восемнадцать", "девятнадцать")
+    val listTen = listOf( "", "", "двадцать ", "тридцать ", "сорок ", "пятьдесят ", "шестьдесят ", "семьдесят ",
+            "восемьдесят ", "девяносто ")
+    val listHundred = listOf("", "сто ", "двести ", "триста ", "четыреста ", "пятьсот ", "шестьсот ",
+            "семьсот ", "восемьсот ", "девятьсот ")
+    val listThousand = listOf("", "одна ", "две ", "три ", "четыре ", "пять ", "шесть ", "семь ", "восемь ",
+            "девять ", "десять ", "одиннадцать ", "двенадцать ", "тринадцать ", "четырнадцать ", "пятнадцать ",
+            "шестнадцать ", "семнадцать ", "восемнадцать ", "девятнадцать ")
+    val listThou = listOf("тысяч ", "тысяча ", "тысячи ", "тысячи ", "тысячи ", "тысяч " ,"тысяч ", "тысяч ",
+            "тысяч ","тысяч ","тысяч ","тысяч ","тысяч ","тысяч ","тысяч ","тысяч ","тысяч ","тысяч ","тысяч ",
+            "тысяч ")
+    fun littleNum(n: Int): String {
+        if (n == 0) return ""
+        if (n < 20) return listOne[n]
+        if (n < 100) return listTen[n / 10] + listOne[n % 10]
+        if ((n < 1000) and (n % 100 < 20)) return listHundred[n / 100] + listOne[n % 100]
+        return listHundred[n / 100] + listTen[(n / 10) % 10] + listOne[n % 10]
+    }
+    fun bigNum(n: Int): String {
+        val v = n / 1000
+        if (v < 20) return listThousand[v] + listThou[v]
+        if (v < 100) return listTen[v / 10] + listThousand[v % 10] + listThou[v % 10]
+        if (v % 100 < 20) return listHundred[v / 100] + listThousand[v % 100] + listThou[v % 100]
+        return listHundred[v / 100] + listTen[(v / 10) % 10] + listThousand[v % 10] + listThou[v % 10]
+    }
+    if (n < 1000) return littleNum(n)
+    return bigNum(n) + littleNum(n % 1000)
+}
