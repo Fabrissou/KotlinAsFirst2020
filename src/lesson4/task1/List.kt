@@ -3,8 +3,6 @@
 package lesson4.task1
 
 import lesson1.task1.discriminant
-import lesson1.task1.sqr
-import lesson3.task1.revert
 import kotlin.math.sqrt
 
 // Урок 4: списки
@@ -211,11 +209,10 @@ fun convert(n: Int, base: Int): List<Int> {
         list.add(0)
         return list
     }
-    else {
     while (num > 0) {
         list.add(num % base)
         num /= base
-    }}
+    }
     list.reverse()
     return list
 }
@@ -232,17 +229,13 @@ fun convert(n: Int, base: Int): List<Int> {
  * (например, n.toString(base) и подобные), запрещается.
  */
 fun convertToString(n: Int, base: Int): String {
-    var string1 = "0123456789"
-    var string2 = ""
-    var num = n
-    if (n == 0) return string2 + 0
-    else {
-    for (i in 'a'..'z') string1 += i
-    while (num > 0) {
-        string2 = string1[num % base] + string2
-        num /= base
-    }}
-    return string2
+    val string = buildString { append("0123456789")
+        for (i in 'a'..'z') append(i)}
+    var answer = ""
+    val num = convert(n, base)
+    if (n == 0) return answer + 0
+    for (i in num) answer += string[i]
+    return answer
 }
 
 /**
@@ -286,33 +279,36 @@ fun roman(n: Int): String = TODO()
  * 23964 = "двадцать три тысячи девятьсот шестьдесят четыре"
  */
 fun russian(n: Int): String {
-    val listOne = listOf(" ", "один", "два", "три", "четыре", "пять", "шесть", "семь", "восемь", "девять",
+    val one = listOf("", "один", "два", "три", "четыре", "пять", "шесть", "семь", "восемь", "девять",
             "десять", "одиннадцать", "двенадцать", "тринадцать", "четырнадцать", "пятнадцать", "шестнадцать",
             "семнадцать", "восемнадцать", "девятнадцать")
-    val listTen = listOf( "", "", "двадцать ", "тридцать ", "сорок ", "пятьдесят ", "шестьдесят ", "семьдесят ",
+    val ten = listOf( "", "", "двадцать ", "тридцать ", "сорок ", "пятьдесят ", "шестьдесят ", "семьдесят ",
             "восемьдесят ", "девяносто ")
-    val listHundred = listOf("", "сто ", "двести ", "триста ", "четыреста ", "пятьсот ", "шестьсот ",
+    val hundred = listOf("", "сто ", "двести ", "триста ", "четыреста ", "пятьсот ", "шестьсот ",
             "семьсот ", "восемьсот ", "девятьсот ")
-    val listThousand = listOf("", "одна ", "две ", "три ", "четыре ", "пять ", "шесть ", "семь ", "восемь ",
+    val thousand = listOf("", "одна ", "две ", "три ", "четыре ", "пять ", "шесть ", "семь ", "восемь ",
             "девять ", "десять ", "одиннадцать ", "двенадцать ", "тринадцать ", "четырнадцать ", "пятнадцать ",
             "шестнадцать ", "семнадцать ", "восемнадцать ", "девятнадцать ")
-    val listThou = listOf("тысяч ", "тысяча ", "тысячи ", "тысячи ", "тысячи ", "тысяч " ,"тысяч ", "тысяч ",
+    val thou = listOf("тысяч ", "тысяча ", "тысячи ", "тысячи ", "тысячи ", "тысяч " ,"тысяч ", "тысяч ",
             "тысяч ","тысяч ","тысяч ","тысяч ","тысяч ","тысяч ","тысяч ","тысяч ","тысяч ","тысяч ","тысяч ",
             "тысяч ")
     fun littleNum(n: Int): String {
-        if (n == 0) return ""
-        if (n < 20) return listOne[n]
-        if (n < 100) return listTen[n / 10] + listOne[n % 10]
-        if ((n < 1000) and (n % 100 < 20)) return listHundred[n / 100] + listOne[n % 100]
-        return listHundred[n / 100] + listTen[(n / 10) % 10] + listOne[n % 10]
+        return when{
+            (n < 20) -> one[n]
+            (n < 100) -> ten[n / 10] + one[n % 10]
+            ((n < 1000) and (n % 100 < 20)) -> hundred[n / 100] + one[n % 100]
+            else -> hundred[n / 100] + ten[(n / 10) % 10] + one[n % 10]
+        }
     }
     fun bigNum(n: Int): String {
         val v = n / 1000
-        if (v < 20) return listThousand[v] + listThou[v]
-        if (v < 100) return listTen[v / 10] + listThousand[v % 10] + listThou[v % 10]
-        if (v % 100 < 20) return listHundred[v / 100] + listThousand[v % 100] + listThou[v % 100]
-        return listHundred[v / 100] + listTen[(v / 10) % 10] + listThousand[v % 10] + listThou[v % 10]
+        return when {
+            (v < 20) -> thousand[v] + thou[v]
+            (v < 100) -> ten[v / 10] + thousand[v % 10] + thou[v % 10]
+            (v % 100 < 20) -> hundred[v / 100] + thousand[v % 100] + thou[v % 100]
+            else -> hundred[v / 100] + ten[(v / 10) % 10] + thousand[v % 10] + thou[v % 10]
+        }
     }
-    if (n < 1000) return littleNum(n)
-    return bigNum(n) + littleNum(n % 1000)
+    if (n < 1000) return littleNum(n).trim()
+    return (bigNum(n) + littleNum(n % 1000)).trim()
 }
