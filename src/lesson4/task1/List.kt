@@ -229,13 +229,9 @@ fun convert(n: Int, base: Int): List<Int> {
  * (например, n.toString(base) и подобные), запрещается.
  */
 fun convertToString(n: Int, base: Int): String {
-    val string = buildString { append("0123456789")
+    val numbers = buildString {for (i in 0..9) append(i)
         for (i in 'a'..'z') append(i)}
-    var answer = ""
-    val num = convert(n, base)
-    if (n == 0) return answer + 0
-    for (i in num) answer += string[i]
-    return answer
+    return if (n == 0) "0" else buildString {for (i in convert(n, base)) append(numbers[i])}
 }
 
 /**
@@ -292,23 +288,16 @@ fun russian(n: Int): String {
     val thou = listOf("тысяч ", "тысяча ", "тысячи ", "тысячи ", "тысячи ", "тысяч " ,"тысяч ", "тысяч ",
             "тысяч ","тысяч ","тысяч ","тысяч ","тысяч ","тысяч ","тысяч ","тысяч ","тысяч ","тысяч ","тысяч ",
             "тысяч ")
-    fun littleNum(n: Int): String {
-        return when{
-            (n < 20) -> one[n]
-            (n < 100) -> ten[n / 10] + one[n % 10]
-            ((n < 1000) and (n % 100 < 20)) -> hundred[n / 100] + one[n % 100]
-            else -> hundred[n / 100] + ten[(n / 10) % 10] + one[n % 10]
-        }
-    }
-    fun bigNum(n: Int): String {
-        val v = n / 1000
-        return when {
-            (v < 20) -> thousand[v] + thou[v]
-            (v < 100) -> ten[v / 10] + thousand[v % 10] + thou[v % 10]
-            (v % 100 < 20) -> hundred[v / 100] + thousand[v % 100] + thou[v % 100]
-            else -> hundred[v / 100] + ten[(v / 10) % 10] + thousand[v % 10] + thou[v % 10]
-        }
-    }
-    if (n < 1000) return littleNum(n).trim()
-    return (bigNum(n) + littleNum(n % 1000)).trim()
+    val v = n / 1000
+    val m = n % 1000
+    return ((if (n > 999) when {
+        (v < 20) -> thousand[v] + thou[v]
+        (v < 100) -> ten[v / 10] + thousand[v % 10] + thou[v % 10]
+        (v % 100 < 20) -> hundred[v / 100] + thousand[v % 100] + thou[v % 100]
+        else -> hundred[v / 100] + ten[(v / 10) % 10] + thousand[v % 10] + thou[v % 10]
+    } else "") + when {
+        (m < 20) -> one[m]
+        (m < 100) -> ten[m / 10] + one[m % 10]
+        (m % 100 < 20) -> hundred[m / 100] + one[m % 100]
+        else -> hundred[m / 100] + ten[(m / 10) % 10] + one[m % 10] }).trim()
 }
