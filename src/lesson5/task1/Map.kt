@@ -2,6 +2,8 @@
 
 package lesson5.task1
 
+import kotlinx.html.MAP
+
 // Урок 5: ассоциативные массивы и множества
 // Максимальное количество баллов = 14
 // Рекомендуемое количество баллов = 9
@@ -105,10 +107,17 @@ fun buildGrades(grades: Map<String, Int>): Map<Int, List<String>> = TODO()
  * это выполняется, если все ключи из a содержатся в b с такими же значениями.
  *
  * Например:
- *   containsIn(mapOf("a" to "z"), mapOf("a" to "z", "b" to "sweet")) -> true
+ *   containsIn(ma("a" to "z"), mapOf("a" to "z", "b" to "sweet")) -> true
  *   containsIn(mapOf("a" to "z"), mapOf("a" to "zee", "b" to "sweet")) -> false
  */
-fun containsIn(a: Map<String, String>, b: Map<String, String>): Boolean = TODO()
+fun containsIn(a: Map<String, String>, b: Map<String, String>): Boolean {
+    var answer = true
+    for ((key, item) in a) {
+        if (!answer) return answer
+        answer = item == b[key]
+    }
+    return answer
+}
 
 /**
  * Простая (2 балла)
