@@ -111,14 +111,7 @@ fun buildGrades(grades: Map<String, Int>): Map<Int, List<String>> = TODO()
  *   containsIn(ma("a" to "z"), mapOf("a" to "z", "b" to "sweet")) -> true
  *   containsIn(mapOf("a" to "z"), mapOf("a" to "zee", "b" to "sweet")) -> false
  */
-fun containsIn(a: Map<String, String>, b: Map<String, String>): Boolean {
-    var answer = true
-    for ((key, item) in a) {
-        if (!answer) return answer
-        answer = item == b[key]
-    }
-    return answer
-}
+fun containsIn(a: Map<String, String>, b: Map<String, String>): Boolean = TODO()
 
 /**
  * Простая (2 балла)
@@ -287,7 +280,11 @@ fun propagateHandshakes(friends: Map<String, Set<String>>): Map<String, Set<Stri
  *   findSumOfTwo(listOf(1, 2, 3), 4) -> Pair(0, 2)
  *   findSumOfTwo(listOf(1, 2, 3), 6) -> Pair(-1, -1)
  */
-fun findSumOfTwo(list: List<Int>, number: Int): Pair<Int, Int> = TODO()
+fun findSumOfTwo(list: List<Int>, number: Int): Pair<Int, Int> {
+    if (list.isNotEmpty()) list.forEachIndexed {i, el ->
+        if ((number - el in list) && (list.indexOf(number - el) != i)) return Pair(i, list.indexOf(number - el))}
+    return Pair(-1, -1)
+}
 
 /**
  * Очень сложная (8 баллов)
