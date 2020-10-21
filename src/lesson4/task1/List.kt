@@ -229,9 +229,8 @@ fun convert(n: Int, base: Int): List<Int> {
  * (например, n.toString(base) и подобные), запрещается.
  */
 fun convertToString(n: Int, base: Int): String {
-    val numbers = buildString {for (i in 0..9) append(i)
-        for (i in 'a'..'z') append(i)}
-    return if (n == 0) "0" else buildString {for (i in convert(n, base)) append(numbers[i])}
+    val l = convert(n, base)
+    return buildString {for (i in l) if (i < 10) append('0' + i) else append('a' - 10 + i)}
 }
 
 /**
