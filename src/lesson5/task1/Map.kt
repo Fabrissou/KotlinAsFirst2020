@@ -291,10 +291,19 @@ fun propagateHandshakes(friends: Map<String, Set<String>>): Map<String, Set<Stri
  *   findSumOfTwo(listOf(1, 2, 3), 6) -> Pair(-1, -1)
  */
 fun findSumOfTwo(list: List<Int>, number: Int): Pair<Int, Int> {
-    if (list.isNotEmpty()) list.forEachIndexed {i, el ->
-        if ((number - el in list) && (list.indexOf(number - el) != i)) return Pair(i, list.indexOf(number - el))}
+    val map = list.withIndex().associate { it.value to it.index }
+    for ((value, index) in map) if ((number - value in map.keys) && (index != map[number - value])) return Pair(index, map[number - value]!!)
     return Pair(-1, -1)
 }
+
+//val map = list.withIndex().associate { it.value to it.index }
+//    return map
+
+//if (list.isNotEmpty   ()) list.forEachIndexed {i, el ->
+//    if ((number - el in set) && (set.indexOf(number - el) != i)) return Pair(i, list.indexOf(number - el))}
+//return Pair(-1, -1)
+
+
 
 /**
  * Очень сложная (8 баллов)
