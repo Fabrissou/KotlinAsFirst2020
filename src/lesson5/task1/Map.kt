@@ -191,7 +191,7 @@ fun findCheapestStuff(stuff: Map<String, Pair<String, Double>>, kind: String): S
     var answer: String? = null
     var answerCost = Double.MAX_VALUE
     for ((name, element) in stuff) {
-        if ((element.first == kind) && (element.second <= answerCost)) {
+        if ((element.first == kind) && (element.second < answerCost)) {
             answer = name
             answerCost = element.second
         }
@@ -292,14 +292,20 @@ fun propagateHandshakes(friends: Map<String, Set<String>>): Map<String, Set<Stri
  *   findSumOfTwo(listOf(1, 2, 3), 6) -> Pair(-1, -1)
  */
 fun findSumOfTwo(list: List<Int>, number: Int): Pair<Int, Int> {
-    val map = mutableMapOf<Int, Int>()
-    list.forEachIndexed { index, element ->
-        val k = number - element
-        if (k in map.keys) return Pair(index, map[k]!!).sorted() else
-            map.put(element, index)
+    val map = list.withIndex().associate { it.value to it.index }
+    for ((value, index) in map) {
+        val digit = map[number - value]
+        if ((digit != null) && (index != digit)) return Pair(index, digit).sorted()
     }
     return Pair(-1, -1)
 }
+
+//val map = list.withIndex().associate { it.value to it.index }
+//    return map
+
+//if (list.isNotEmpty   ()) list.forEachIndexed {i, el ->
+//    if ((number - el in set) && (set.indexOf(number - el) != i)) return Pair(i, list.indexOf(number - el))}
+//return Pair(-1, -1)
 
 
 /**
