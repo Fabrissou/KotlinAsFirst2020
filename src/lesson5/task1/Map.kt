@@ -3,6 +3,7 @@
 package lesson5.task1
 
 import kotlinx.html.MAP
+import ru.spbstu.wheels.sorted
 
 // Урок 5: ассоциативные массивы и множества
 // Максимальное количество баллов = 14
@@ -17,8 +18,8 @@ import kotlinx.html.MAP
  * игнорируется.
  */
 fun shoppingListCost(
-    shoppingList: List<String>,
-    costs: Map<String, Double>
+        shoppingList: List<String>,
+        costs: Map<String, Double>
 ): Double {
     var totalCost = 0.0
 
@@ -39,8 +40,8 @@ fun shoppingListCost(
  * для которых телефон начинается с заданного кода страны `countryCode`
  */
 fun filterByCountryCode(
-    phoneBook: MutableMap<String, String>,
-    countryCode: String
+        phoneBook: MutableMap<String, String>,
+        countryCode: String
 ) {
     val namesToRemove = mutableListOf<String>()
 
@@ -62,8 +63,8 @@ fun filterByCountryCode(
  * и вернуть отфильтрованный текст
  */
 fun removeFillerWords(
-    text: List<String>,
-    vararg fillerWords: String
+        text: List<String>,
+        vararg fillerWords: String
 ): List<String> {
     val fillerWordSet = setOf(*fillerWords)
 
@@ -111,7 +112,7 @@ fun buildGrades(grades: Map<String, Int>): Map<Int, List<String>> = TODO()
  *   containsIn(ma("a" to "z"), mapOf("a" to "z", "b" to "sweet")) -> true
  *   containsIn(mapOf("a" to "z"), mapOf("a" to "zee", "b" to "sweet")) -> false
  */
-fun containsIn(a: Map<String, String>, b: Map<String, String>): Boolean =   TODO()
+fun containsIn(a: Map<String, String>, b: Map<String, String>): Boolean = TODO()
 
 /**
  * Простая (2 балла)
@@ -292,7 +293,10 @@ fun propagateHandshakes(friends: Map<String, Set<String>>): Map<String, Set<Stri
  */
 fun findSumOfTwo(list: List<Int>, number: Int): Pair<Int, Int> {
     val map = list.withIndex().associate { it.value to it.index }
-    for ((value, index) in map) if ((number - value in map.keys) && (index != map[number - value])) return Pair(index, map[number - value]!!)
+    for ((value, index) in map) {
+        val digit = map[number - value]
+        if ((digit != null) && (index != digit)) return Pair(index, digit).sorted()
+    }
     return Pair(-1, -1)
 }
 
@@ -302,7 +306,6 @@ fun findSumOfTwo(list: List<Int>, number: Int): Pair<Int, Int> {
 //if (list.isNotEmpty   ()) list.forEachIndexed {i, el ->
 //    if ((number - el in set) && (set.indexOf(number - el) != i)) return Pair(i, list.indexOf(number - el))}
 //return Pair(-1, -1)
-
 
 
 /**
