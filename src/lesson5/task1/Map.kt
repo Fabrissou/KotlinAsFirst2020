@@ -300,12 +300,6 @@ fun findSumOfTwo(list: List<Int>, number: Int): Pair<Int, Int> {
     return Pair(-1, -1)
 }
 
-//val map = list.withIndex().associate { it.value to it.index }
-//    return map
-
-//if (list.isNotEmpty   ()) list.forEachIndexed {i, el ->
-//    if ((number - el in set) && (set.indexOf(number - el) != i)) return Pair(i, list.indexOf(number - el))}
-//return Pair(-1, -1)
 
 
 /**
