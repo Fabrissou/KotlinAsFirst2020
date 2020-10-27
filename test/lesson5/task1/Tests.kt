@@ -216,8 +216,15 @@ class Tests {
     fun findCheapestStuff() {
         assertNull(
                 findCheapestStuff(
-                        mapOf("" to ("" to 1.7976931348623157e+308)),
-                        ""
+                        mapOf("Мария" to ("печенье" to 20.0), "Орео" to ("печенье" to 100.0)),
+                        "торт"
+                )
+        )
+        assertEquals(
+                "Мария",
+                findCheapestStuff(
+                        mapOf("Мария" to ("печенье" to 20.0), "Орео" to ("печенье" to 100.0)),
+                        "печенье"
                 )
         )
     }

@@ -146,7 +146,19 @@ fun flattenPhoneNumber(phone: String): String = TODO()
  * Прочитать строку и вернуть максимальное присутствующее в ней число (717 в примере).
  * При нарушении формата входной строки или при отсутствии в ней чисел, вернуть -1.
  */
-fun bestLongJump(jumps: String): Int = TODO()
+fun bestLongJump(jumps: String): Int {
+    val results = jumps.split(" ")
+    var answer = -1
+    for (i in results) {
+        try {
+            val res = i.toInt()
+            if (res > answer) answer = res
+        } catch (e: NumberFormatException) {
+            if ((i != "%") && (i != "-")) return -1
+        }
+    }
+    return answer
+}
 
 /**
  * Сложная (6 баллов)
@@ -159,7 +171,20 @@ fun bestLongJump(jumps: String): Int = TODO()
  * При нарушении формата входной строки, а также в случае отсутствия удачных попыток,
  * вернуть -1.
  */
-fun bestHighJump(jumps: String): Int = TODO()
+fun bestHighJump(jumps: String): Int {
+    val results = jumps.split(" ")
+    var answer = -1
+    results.forEachIndexed {i, el ->
+        try {
+            val res = el.toInt()
+            if ((res > answer) && ("+" in results[i + 1])) answer = res
+        } catch (e: NumberFormatException) {
+            if ( !(("+" in el) || ("%" in el) || ("-" in el)) )
+                return -1
+        }
+    }
+    return answer
+}
 
 /**
  * Сложная (6 баллов)
@@ -182,6 +207,16 @@ fun plusMinus(expression: String): Int = TODO()
  * Пример: "Он пошёл в в школу" => результат 9 (индекс первого 'в')
  */
 fun firstDuplicateIndex(str: String): Int = TODO()
+
+//{
+  //  var length = str.length
+    //val words = str.split(" ")
+ //   words.forEachIndexed{ i, el ->
+   //     if (el == words[i + 1]) return str.length - length
+     //   length -= (el.length + 1)
+  //  }
+  //  return -1
+//}
 
 /**
  * Сложная (6 баллов)
