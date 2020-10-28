@@ -3,7 +3,9 @@
 package lesson5.task1
 
 import kotlinx.html.MAP
+import ru.spbstu.kotlin.typeclass.kind
 import ru.spbstu.wheels.sorted
+import kotlin.math.min
 
 // Урок 5: ассоциативные массивы и множества
 // Максимальное количество баллов = 14
@@ -188,15 +190,14 @@ fun averageStockPrice(stockPrices: List<Pair<String, Double>>): Map<String, Doub
  *   ) -> "Мария"
  */
 fun findCheapestStuff(stuff: Map<String, Pair<String, Double>>, kind: String): String? {
-    var answer: String? = null
-    var answerCost = Double.MAX_VALUE
-    for ((name, element) in stuff) {
-        if ((element.first == kind) && (element.second <= answerCost)) {
-            answer = name
-            answerCost = element.second
+    val map = stuff.keys.groupBy({stuff[it]!!.first}, {Pair(it, stuff[it]!!.second)})
+    if (kind in map) {
+        var minPair = map[kind]!![0]
+        for (i in map[kind]!!) {
+            if (i.second < minPair.second) minPair = i
         }
-    }
-    return answer
+        return minPair.first
+    } else return null
 }
 
 /**
