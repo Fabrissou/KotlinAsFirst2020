@@ -77,7 +77,21 @@ fun main() {
  * Обратите внимание: некорректная с точки зрения календаря дата (например, 30.02.2009) считается неверными
  * входными данными.
  */
-fun dateStrToDigit(str: String): String = TODO()
+fun dateStrToDigit(str: String): String {
+    val months = listOf("января", "февраля", "марта", "апреля", "мая", "июня", "июля", "августа",
+            "сентября", "октября", "ноября", "декабря")
+    val parts = str.split(" ")
+    if (parts.size != 3) return ""
+    return try {
+        val day = parts[0].toInt()
+        val year = parts[2].toInt()
+        val month = if (parts[1] in months) months.indexOf(parts[1]) + 1 else return ""
+        return if ((year > 0) && (day > 0) && (day <= daysInMonth(month, year))) String.format("%02d.%02d.%d",
+                day, month, year) else ""
+    } catch (e: NumberFormatException) {
+        ""
+    }
+}
 
 
 /**
@@ -90,7 +104,21 @@ fun dateStrToDigit(str: String): String = TODO()
  * Обратите внимание: некорректная с точки зрения календаря дата (например, 30 февраля 2009) считается неверными
  * входными данными.
  */
-fun dateDigitToStr(digital: String): String = TODO()
+fun dateDigitToStr(digital: String): String {
+    val months = listOf("января", "февраля", "марта", "апреля", "мая", "июня", "июля", "августа",
+            "сентября", "октября", "ноября", "декабря")
+    val parts = digital.split(".")
+    if (parts.size != 3) return ""
+    return try {
+        val day = parts[0].toInt()
+        val year = parts[2].toInt()
+        val month = if (parts[1].toInt() in 1..12) months[parts[1].toInt() - 1] else return ""
+        return if ((year > 0) && (day > 0) && (day <= daysInMonth(parts[1].toInt(), year)))
+            String.format("%d %s %d", day, month, year) else ""
+    } catch (e: NumberFormatException) {
+        ""
+    }
+}
 
 /**
  * Средняя (4 балла)
@@ -146,12 +174,12 @@ fun bestLongJump(jumps: String): Int {
 fun bestHighJump(jumps: String): Int {
     val results = jumps.split(" ")
     var answer = -1
-    results.forEachIndexed {i, el ->
+    results.forEachIndexed { i, el ->
         try {
             val res = el.toInt()
             if ((res > answer) && ("+" in results[i + 1])) answer = res
         } catch (e: NumberFormatException) {
-            if ( !(("+" in el) || ("%" in el) || ("-" in el)) )
+            if (!(("+" in el) || ("%" in el) || ("-" in el)))
                 return -1
         }
     }
@@ -191,7 +219,19 @@ fun firstDuplicateIndex(str: String): Int = TODO()
  * или пустую строку при нарушении формата строки.
  * Все цены должны быть больше нуля либо равны нулю.
  */
-fun mostExpensive(description: String): String = TODO()
+fun mostExpensive(description: String): String {
+    val parts = description.split(" ", "; ")
+    if (parts.size < 2) return ""
+    val map = mutableMapOf<Double, String>()
+    try {
+        for (i in (parts.indices - 2)) {
+            if ((i % 2 == 0) && (parts[i + 1].toDouble() >= 0.0)) map[parts[i + 1].toDouble()] = parts[i]
+        }
+    } catch (e: NumberFormatException) {
+        return ""
+    }
+    return map[map.maxOf {it.key}]!!
+}
 
 /**
  * Сложная (6 баллов)
