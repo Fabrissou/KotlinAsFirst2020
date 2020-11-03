@@ -174,10 +174,11 @@ fun bestLongJump(jumps: String): Int {
 fun bestHighJump(jumps: String): Int {
     val results = jumps.split(" ")
     var answer = -1
+    val requestValue = listOf('+', '-', '%')
     results.forEachIndexed { i, el ->
         try {
             val res = el.toInt()
-            if ((res > answer) && ("+" in results[i + 1])) answer = res
+            if ((res > answer) && ('+' in results[i + 1]) && (results[i + 1].all {it in requestValue })) answer = res
         } catch (e: NumberFormatException) {
             if (!(("+" in el) || ("%" in el) || ("-" in el)))
                 return -1
