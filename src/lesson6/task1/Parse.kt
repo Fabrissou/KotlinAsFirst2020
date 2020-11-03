@@ -197,7 +197,7 @@ fun mostExpensive(description: String): String {
     if (parts.size < 2) return ""
     val map = mutableMapOf<Double, String>()
     try {
-        for (i in (parts.indices - 2)) {
+        for (i in (parts.indices - 1)) {
             if ((i % 2 == 0) && (parts[i + 1].toDouble() >= 0.0)) map[parts[i + 1].toDouble()] = parts[i]
         }
     } catch (e: NumberFormatException) {
