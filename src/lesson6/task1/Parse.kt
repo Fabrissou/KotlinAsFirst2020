@@ -146,13 +146,12 @@ fun bestLongJump(jumps: String): Int {
 fun bestHighJump(jumps: String): Int {
     val results = jumps.split(" ")
     var answer = -1
-    val requestValue = listOf('+', '-', '%')
     results.forEachIndexed { i, el ->
         try {
             val res = el.toInt()
-            if ((res > answer) && ('+' in results[i + 1]) && (results[i + 1].all {it in requestValue })) answer = res
+            if ((res > answer) && ('+' in results[i + 1]) && (!results[i + 1].contains(Regex("[^%+-]")))) answer = res
         } catch (e: NumberFormatException) {
-            if (!(("+" in el) || ("%" in el) || ("-" in el)))
+            if (el.contains(Regex("[^%+-]")) )
                 return -1
         }
     }
@@ -194,16 +193,17 @@ fun firstDuplicateIndex(str: String): Int = TODO()
  */
 fun mostExpensive(description: String): String {
     val parts = description.split(" ", "; ")
+    var answer = Pair<String, Double>("", -1.0)
     if (parts.size < 2) return ""
-    val map = mutableMapOf<Double, String>()
     try {
-        for (i in (parts.indices - 1)) {
-            if ((i % 2 == 0) && (parts[i + 1].toDouble() >= 0.0)) map[parts[i + 1].toDouble()] = parts[i]
+        for (i in (parts.indices step 2)) {
+            val number = parts[i + 1].toDouble()
+            if ((i % 2 == 0) && (number >= 0.0) && (number > answer.second)) answer = Pair(parts[i], number)
         }
     } catch (e: NumberFormatException) {
         return ""
     }
-    return map[map.maxOf {it.key}]!!
+    return answer.first
 }
 
 /**
