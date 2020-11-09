@@ -87,7 +87,6 @@ fun deleteMarked(inputName: String, outputName: String) {
  */
 fun countSubstrings(inputName: String, substrings: List<String>): Map<String, Int> = TODO()
 
-
 /**
  * Средняя (12 баллов)
  *
@@ -242,8 +241,27 @@ fun transliterate(inputName: String, dictionary: Map<Char, String>, outputName: 
  *
  * Обратите внимание: данная функция не имеет возвращаемого значения
  */
+fun choticWord(a: String): Boolean {
+    a.forEachIndexed {i, el ->
+        if (el in a.substring(i + 1)) return false
+    }
+    return true
+}
+
 fun chooseLongestChaoticWord(inputName: String, outputName: String) {
-    TODO()
+    val writer = File(outputName).bufferedWriter()
+    var maxString = ""
+    var count = 0
+    writer.use {
+        File(inputName).forEachLine { word ->
+            if ((word.length >= maxString.length) && (choticWord(word.toLowerCase()))) {
+                if (count != 0) it.write(", ")
+                count++
+                maxString = word
+                it.write(word)
+            }
+        }
+    }
 }
 
 /**
