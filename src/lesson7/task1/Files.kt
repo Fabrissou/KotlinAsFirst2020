@@ -309,8 +309,46 @@ Suspendisse ~~et elit in enim tempus iaculis~~.
  *
  * (Отступы и переносы строк в примере добавлены для наглядности, при решении задачи их реализовывать не обязательно)
  */
+//fun leftString(a: String): String {
+//    var string = a
+//    val pattern1 = Regex("[\*\*\*]")
+//    val pattern2 = Regex(""[\*\*]")
+//    val pattern3 = Regex("[\*]")
+//    val pattern4 = Regex("[\~\~]")
+//    if (pattern4.matches(string)) pattern4.replace(string, "<s>")
+//    if (pattern1.matches(string)) {
+//        pattern1.replace(string, "<b><i>")
+//        return string
+//    }
+//    if (pattern2.matches(string)) {
+//        pattern2.replace(string, "<b>")
+//        return string
+//    }
+//    if (pattern3.matches(string)) {
+//        pattern3.replace(string, "<i>")
+//        return string
+//    }
+//    return string
+//}
+
+//
+//fun rightString(a: String): String {
+//
+//}
+
+
 fun markdownToHtmlSimple(inputName: String, outputName: String) {
-    TODO()
+//    val writer = File(outputName).bufferedWriter()
+//    writer.use {
+//        File(inputName).forEachLine {line ->
+//            line.split(' ').forEachIndexed {i, el ->
+//                val left = el.substring(0, (el.length / 2))
+//                val right = el.substring(el.length / 2)
+//                if (('*' in left) || ('~' in left)) it.write(leftString(left))
+//
+//            }
+//        }
+//    }
 }
 
 /**
