@@ -309,46 +309,65 @@ Suspendisse ~~et elit in enim tempus iaculis~~.
  *
  * (Отступы и переносы строк в примере добавлены для наглядности, при решении задачи их реализовывать не обязательно)
  */
-//fun leftString(a: String): String {
-//    var string = a
-//    val pattern1 = Regex("[\*\*\*]")
-//    val pattern2 = Regex(""[\*\*]")
-//    val pattern3 = Regex("[\*]")
-//    val pattern4 = Regex("[\~\~]")
-//    if (pattern4.matches(string)) pattern4.replace(string, "<s>")
-//    if (pattern1.matches(string)) {
-//        pattern1.replace(string, "<b><i>")
-//        return string
-//    }
-//    if (pattern2.matches(string)) {
-//        pattern2.replace(string, "<b>")
-//        return string
-//    }
-//    if (pattern3.matches(string)) {
-//        pattern3.replace(string, "<i>")
-//        return string
-//    }
-//    return string
-//}
 
-//
-//fun rightString(a: String): String {
-//
-//}
+//Функция проходит по всем строкам, берет каждое слово, разбивает его на две части
+//и записывает в writer сначала преобразованную левую часть, а потом преобразованную правую часть.
+fun leftString(a: String): String {
+    var string = a
+    val pattern1 = Regex("\\*\\*\\*")
+    val pattern2 = Regex("\\*\\*")
+    val pattern3 = Regex("\\*")
+    val pattern4 = Regex("~~")
 
+    if (pattern4.containsMatchIn(string)) string = pattern4.replace(string, "<s>")
+    if (pattern1.containsMatchIn(string)) return pattern1.replace(string, "<b><i>")
+    if (pattern2.containsMatchIn(string)) return pattern2.replace(string, "<b>")
+    if (pattern3.containsMatchIn(string)) return pattern3.replace(string, "<i>")
+    return string
+}
+fun rightString(a: String): String {
+    var string = a
+    val pattern1 = Regex("\\*\\*\\*")
+    val pattern2 = Regex("\\*\\*")
+    val pattern3 = Regex("\\*")
+    val pattern4 = Regex("~~")
 
+    if (pattern4.containsMatchIn(string)) string = pattern4.replace(string, "</s>")
+    if (pattern1.containsMatchIn(string)) return pattern1.replace(string, "</b></i>")
+    if (pattern2.containsMatchIn(string)) return pattern2.replace(string, "</b>")
+    if (pattern3.containsMatchIn(string)) return pattern3.replace(string, "</i>")
+    return string
+}
 fun markdownToHtmlSimple(inputName: String, outputName: String) {
-//    val writer = File(outputName).bufferedWriter()
-//    writer.use {
-//        File(inputName).forEachLine {line ->
-//            line.split(' ').forEachIndexed {i, el ->
-//                val left = el.substring(0, (el.length / 2))
-//                val right = el.substring(el.length / 2)
-//                if (('*' in left) || ('~' in left)) it.write(leftString(left))
-//
-//            }
-//        }
-//    }
+    val writer = File(outputName).bufferedWriter()
+    writer.use {
+        it.write("<html><body>")
+        it.newLine()
+        it.write("<p>")
+
+        File(inputName).forEachLine {line ->
+            if (line.isNotEmpty()) {
+                line.split(' ').forEachIndexed {i, el ->
+                    val left = el.substring(0, (el.length / 2))
+                    val right = el.substring(el.length / 2)
+                    if (('*' in left) || ("~~" in left)) it.write(leftString(left)) else
+                        it.write(left)
+                    if (('*' in right) || ("~~" in right)) it.write(rightString(right)) else
+                        it.write(right)
+                    it.write(" ")
+                }
+                it.newLine()
+            } else {
+                it.newLine()
+                it.write("</p>")
+                it.write("<p>")
+            }
+        }
+
+        it.newLine()
+        it.write("</p>")
+        it.write("</body></html>")
+    }
 }
 
 /**
@@ -518,3 +537,22 @@ fun printDivisionProcess(lhv: Int, rhv: Int, outputName: String) {
     TODO()
 }
 
+
+
+
+
+
+//fun worll(b: String): String {
+//    var answer = ""
+//    val parts = b.split(" ")
+//    parts.forEachIndexed {i, el ->
+//        val left = el.substring(0, (el.length / 2))
+//        val right = el.substring(el.length / 2)
+//        if (('*' in left) || ("~~" in left)) answer += leftString(left) else
+//            answer += left
+//        if (('*' in right) || ("~~" in right)) answer += rightString(right) else
+//            answer += right
+//        answer += " "
+//    }
+//return answer.trim()
+//}
