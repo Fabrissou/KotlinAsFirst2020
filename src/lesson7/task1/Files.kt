@@ -342,7 +342,6 @@ fun markdownToHtmlSimple(inputName: String, outputName: String) {
     val writer = File(outputName).bufferedWriter()
     writer.use {
         it.write("<html><body>")
-        it.newLine()
         it.write("<p>")
 
         File(inputName).forEachLine {line ->
@@ -358,13 +357,11 @@ fun markdownToHtmlSimple(inputName: String, outputName: String) {
                 }
                 it.newLine()
             } else {
-                it.newLine()
                 it.write("</p>")
+                it.newLine()
                 it.write("<p>")
             }
         }
-
-        it.newLine()
         it.write("</p>")
         it.write("</body></html>")
     }
@@ -536,23 +533,3 @@ fun printMultiplicationProcess(lhv: Int, rhv: Int, outputName: String) {
 fun printDivisionProcess(lhv: Int, rhv: Int, outputName: String) {
     TODO()
 }
-
-
-
-
-
-
-//fun worll(b: String): String {
-//    var answer = ""
-//    val parts = b.split(" ")
-//    parts.forEachIndexed {i, el ->
-//        val left = el.substring(0, (el.length / 2))
-//        val right = el.substring(el.length / 2)
-//        if (('*' in left) || ("~~" in left)) answer += leftString(left) else
-//            answer += left
-//        if (('*' in right) || ("~~" in right)) answer += rightString(right) else
-//            answer += right
-//        answer += " "
-//    }
-//return answer.trim()
-//}
