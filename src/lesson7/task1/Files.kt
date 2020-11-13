@@ -262,20 +262,23 @@ fun chaoticWord(word: String): Boolean {
 }
 
 fun chooseLongestChaoticWord(inputName: String, outputName: String) {
-    val writer = File(outputName).bufferedWriter()
+    var writer = File(outputName).bufferedWriter()
     var maxLength = -1
     var count = 0
-    writer.use {
-        File(inputName).forEachLine { word ->
-            val bool = chaoticWord(word.toLowerCase())
-            if ((word.length > maxLength) && (bool)) maxLength = word.length
-            if ((word.length == maxLength) && (bool)) {
-                if (count != 0) it.write(", ")
-                count++
-                it.write(word)
-            }
+    File(inputName).forEachLine { word ->
+        val bool = chaoticWord(word.toLowerCase())
+        if ((word.length > maxLength) && (bool)) {
+            maxLength = word.length
+            writer = File(outputName).bufferedWriter()
+            count = 0
+        }
+        if ((word.length == maxLength) && (bool)) {
+            if (count != 0) writer.write(", ")
+            count++
+            writer.write(word)
         }
     }
+    writer.close()
 }
 
 /**

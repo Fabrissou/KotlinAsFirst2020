@@ -4,6 +4,7 @@ package lesson2.task2
 
 import lesson1.task1.sqr
 import kotlin.math.abs
+import kotlin.math.sqrt
 import kotlin.math.min as min
 
 /**
@@ -60,7 +61,7 @@ fun daysInMonth(month: Int, year: Int): Int =
 fun circleInside(
     x1: Double, y1: Double, r1: Double,
     x2: Double, y2: Double, r2: Double
-): Boolean = (r2 >= r1) && ((sqr(x2 - x1) + sqr(y2 - y1)) <= sqr(r2 - r1))
+): Boolean = (r2 >= r1) && (sqrt(sqr(x2 - x1) + sqr(y2 - y1)) <= sqrt(sqr(r2 - r1)))
 
 
 /**
