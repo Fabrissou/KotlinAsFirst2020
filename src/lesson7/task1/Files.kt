@@ -254,21 +254,22 @@ fun transliterate(inputName: String, dictionary: Map<Char, String>, outputName: 
  *
  * Обратите внимание: данная функция не имеет возвращаемого значения
  */
-fun choticWord(a: String): Boolean {
-    a.forEachIndexed {i, el ->
-        if (el in a.substring(i + 1)) return false
-    }
-    return true
+
+fun chaoticWord(word: String): Boolean {
+    val set = mutableSetOf<Char>()
+    word.forEach { set += it }
+    return word.length == set.size
 }
 
 fun chooseLongestChaoticWord(inputName: String, outputName: String) {
     val writer = File(outputName).bufferedWriter()
     var maxLength = -1
     var count = 0
-    File(inputName).forEachLine { if ((it.length > maxLength) && (choticWord(it.toLowerCase()))) maxLength = it.length }
     writer.use {
         File(inputName).forEachLine { word ->
-            if ((word.length == maxLength) && (choticWord(word.toLowerCase()))) {
+            val bool = chaoticWord(word.toLowerCase())
+            if ((word.length > maxLength) && (bool)) maxLength = word.length
+            if ((word.length == maxLength) && (bool)) {
                 if (count != 0) it.write(", ")
                 count++
                 it.write(word)
