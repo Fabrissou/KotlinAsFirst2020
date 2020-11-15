@@ -367,13 +367,13 @@ fun markdownToHtmlSimple(inputName: String, outputName: String) {
                         i++
                     }
                 }
-                if ((line.last() == '*') && (steck.last() == "<i>")) {
+                if ((line.last() == '*') && (line[line.lastIndex - 1] == '*') && (line[line.lastIndex - 2] == '*') && (steck.last() == "<i>")) {
                         it.write("</i>")
                         steck.removeAt(steck.size - 1)
-                    } else if (line.last() == '*') {
-                        it.write("<i>")
-                        steck.add("<i>")
-                    } else it.write(line.last().toString())
+                    } else if ((line.last() == '*') && (line[line.lastIndex - 1] != '*') && (steck.last() == "<i>")) {
+                        it.write("</i>")
+                        steck.removeAt(steck.size - 1)
+                    } else if (line.last() != '*') it.write(line.last().toString())
             }
             else if (steck.last() == "<p>") {
                     it.write("</p>")
