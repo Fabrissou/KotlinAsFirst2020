@@ -327,62 +327,64 @@ Suspendisse ~~et elit in enim tempus iaculis~~.
  * (Отступы и переносы строк в примере добавлены для наглядности, при решении задачи их реализовывать не обязательно)
  */
 
-//Функция проходит по всем строкам, берет каждое слово, разбивает его на две части
-//и записывает в writer сначала преобразованную левую часть, а потом преобразованную правую часть.
-//fun leftString(a: String): String {
-//    var string = a
-//    val pattern1 = Regex("\\*\\*\\*")
-//    val pattern2 = Regex("\\*\\*")
-//    val pattern3 = Regex("\\*")
-//    val pattern4 = Regex("~~")
-//
-//    if (pattern4.containsMatchIn(string)) string = pattern4.replace(string, "<s>")
-//    if (pattern1.containsMatchIn(string)) return pattern1.replace(string, "<b><i>")
-//    if (pattern2.containsMatchIn(string)) return pattern2.replace(string, "<b>")
-//    if (pattern3.containsMatchIn(string)) return pattern3.replace(string, "<i>")
-//    return string
-//}
-//fun rightString(a: String): String {
-//    var string = a
-//    val pattern1 = Regex("\\*\\*\\*")
-//    val pattern2 = Regex("\\*\\*")
-//    val pattern3 = Regex("\\*")
-//    val pattern4 = Regex("~~")
-//
-//    if (pattern4.containsMatchIn(string)) string = pattern4.replace(string, "</s>")
-//    if (pattern1.containsMatchIn(string)) return pattern1.replace(string, "</b></i>")
-//    if (pattern2.containsMatchIn(string)) return pattern2.replace(string, "</b>")
-//    if (pattern3.containsMatchIn(string)) return pattern3.replace(string, "</i>")
-//    return string
-//}
 fun markdownToHtmlSimple(inputName: String, outputName: String) {
-//    val writer = File(outputName).bufferedWriter()
-//    writer.use {
-//        it.write("<html><body>")
-//        it.write("<p>")
-//
-//        File(inputName).forEachLine {line ->
-//            if (line.isNotEmpty()) {
-//                line.split(' ').forEachIndexed {i, el ->
-//                    val left = el.substring(0, (el.length / 2))
-//                    val right = el.substring(el.length / 2)
-//                    if (('*' in left) || ("~~" in left)) it.write(leftString(left)) else
-//                        it.write(left)
-//                    if (('*' in right) || ("~~" in right)) it.write(rightString(right)) else
-//                        it.write(right)
-//                    it.write(" ")
-//                }
-//                it.newLine()
-//            } else {
-//                it.write("</p>")
-//                it.newLine()
-//                it.write("<p>")
-//            }
-//        }
-//        it.write("</p>")
-//        it.write("</body></html>")
-//    }
-    TODO()
+    val steck = mutableListOf<String>("")
+    val writer = File(outputName).bufferedWriter()
+    writer.use {
+        it.write("<html><body>")
+        it.write("<p>")
+        steck.add("<p>")
+        File(inputName).forEachLine {line ->
+            if (line.isNotEmpty()) {
+                var i = 0
+                while (i < line.lastIndex) {
+                    if (((line[i] == '*') && (line[i + 1] == '*')) && (steck.last() == "<b>")) {
+                        it.write("</b>")
+                        steck.removeAt(steck.size - 1)
+                        i += 2
+                    } else if ((line[i] == '*') && (line[i + 1] == '*')) {
+                        it.write("<b>")
+                        steck.add("<b>")
+                        i += 2
+                    } else if ((line[i] == '*') && (steck.last() == "<i>")) {
+                        it.write("</i>")
+                        steck.removeAt(steck.size - 1)
+                        i++
+                    } else if (line[i] == '*') {
+                        it.write("<i>")
+                        steck.add("<i>")
+                        i++
+                    } else if (((line[i] == '~') && (line[i + 1] == '~')) && (steck.last() == "<s>")) {
+                        it.write("</s>")
+                        steck.removeAt(steck.size - 1)
+                        i += 2
+                    } else if ((line[i] == '~') && (line[i + 1] == '~')) {
+                        it.write("<s>")
+                        steck.add("<s>")
+                        i += 2
+                    } else {
+                        it.write(line[i].toString())
+                        i++
+                    }
+                }
+                if ((line.last() == '*') && (steck.last() == "<i>")) {
+                        it.write("</i>")
+                        steck.removeAt(steck.size - 1)
+                    } else if (line.last() == '*') {
+                        it.write("<i>")
+                        steck.add("<i>")
+                    } else it.write(line.last().toString())
+            }
+            else if (steck.last() == "<p>") {
+                    it.write("</p>")
+                    it.newLine()
+                    steck.removeAt(steck.size - 1)
+                    it.write("<p>")
+                }
+            }
+        it.write("</p>")
+        it.write("</body></html>")
+    }
 }
 
 /**
