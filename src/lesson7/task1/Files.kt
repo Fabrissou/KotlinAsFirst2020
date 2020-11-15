@@ -373,7 +373,11 @@ fun markdownToHtmlSimple(inputName: String, outputName: String) {
                     } else if ((line.last() == '*') && (line[line.lastIndex - 1] != '*') && (steck.last() == "<i>")) {
                         it.write("</i>")
                         steck.removeAt(steck.size - 1)
-                    } else if (line.last() != '*') it.write(line.last().toString())
+                    } else if (line.last() != '*') {
+                    if (line.last() == '~') {
+                        if (line[line.lastIndex - 1] != '~') it.write(line.last().toString())
+                    } else it.write(line.last().toString())
+                }
             }
             else if (steck.last() == "<p>") {
                     it.write("</p>")
