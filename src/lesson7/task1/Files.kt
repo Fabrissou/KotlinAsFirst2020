@@ -377,10 +377,11 @@ fun markdownToHtmlSimple(inputName: String, outputName: String) {
             }
             else if (steck.last() == "<p>") {
                     it.write("</p>")
-                    it.newLine()
-                    steck.removeAt(steck.size - 1)
                     it.write("<p>")
-                }
+                } else {
+                it.write("<p>")
+                steck.add("<p>")
+            }
             }
         it.write("</p>")
         it.write("</body></html>")
