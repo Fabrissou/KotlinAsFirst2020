@@ -370,10 +370,16 @@ fun markdownToHtmlSimple(inputName: String, outputName: String) {
                 if ((line.last() == '*') && (line[line.lastIndex - 1] == '*') && (line[line.lastIndex - 2] == '*') && (steck.last() == "<i>")) {
                         it.write("</i>")
                         steck.removeAt(steck.size - 1)
-                    } else if ((line.last() == '*') && (line[line.lastIndex - 1] != '*') && (steck.last() == "<i>")) {
+                    } else if ((line.last() == '*') && (line[line.lastIndex - 1] == '*') && (line[line.lastIndex - 2] == '*') && (steck.last() != "<i>")) {
+                    it.write("<i>")
+                    steck.add("<i>")
+                } else if ((line.last() == '*') && (line[line.lastIndex - 1] != '*') && (steck.last() == "<i>")) {
                         it.write("</i>")
                         steck.removeAt(steck.size - 1)
-                    } else if (line.last() != '*') {
+                    } else if (((line.last() == '*') && (line[line.lastIndex - 1] != '*') && (steck.last() != "<i>"))) {
+                    it.write("<i>")
+                    steck.add("<i>")
+                } else if (line.last() != '*') {
                     if (line.last() == '~') {
                         if (line[line.lastIndex - 1] != '~') it.write(line.last().toString())
                     } else it.write(line.last().toString())
