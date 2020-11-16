@@ -256,9 +256,7 @@ fun transliterate(inputName: String, dictionary: Map<Char, String>, outputName: 
  */
 
 fun chaoticWord(word: String): Boolean {
-    val set = mutableSetOf<Char>()
-    word.forEach { set += it }
-    return word.length == set.size
+    return word.length == word.toSet().size
 }
 
 fun chooseLongestChaoticWord(inputName: String, outputName: String) {
