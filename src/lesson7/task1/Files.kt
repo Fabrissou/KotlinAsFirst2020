@@ -333,7 +333,7 @@ fun markdownToHtmlSimple(inputName: String, outputName: String) {
         it.write("<p>")
         steck.add("<p>")
         File(inputName).forEachLine {line ->
-            if (line.isNotEmpty()) {
+            if (line.isNotEmpty() && (line.length > 2)) {
                 var i = 0
                 while (i < line.lastIndex) {
                     if (((line[i] == '*') && (line[i + 1] == '*')) && (steck.last() == "<b>")) {
