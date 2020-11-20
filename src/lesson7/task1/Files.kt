@@ -384,22 +384,24 @@ fun markdownToHtmlSimple(inputName: String, outputName: String) {
                                 i++
                             }
                         }
-                        if ((line.last() == '*') && (line[line.lastIndex - 1] == '*') && (line[line.lastIndex - 2] == '*') && (steck.last() == "<i>")) {
-                            it.write("</i>")
-                            steck.removeAt(steck.size - 1)
-                        } else if ((line.last() == '*') && (line[line.lastIndex - 1] == '*') && (line[line.lastIndex - 2] == '*') && (steck.last() != "<i>")) {
-                            it.write("<i>")
-                            steck.add("<i>")
-                        } else if ((line.last() == '*') && (line[line.lastIndex - 1] != '*') && (steck.last() == "<i>")) {
-                            it.write("</i>")
-                            steck.removeAt(steck.size - 1)
-                        } else if (((line.last() == '*') && (line[line.lastIndex - 1] != '*') && (steck.last() != "<i>"))) {
-                            it.write("<i>")
-                            steck.add("<i>")
-                        } else if (line.last() != '*') {
-                            if (line.last() == '~') {
-                                if (line[line.lastIndex - 1] != '~') it.write(line.last().toString())
-                            } else it.write(line.last().toString())
+                        if (line != "**") {
+                            if ((line.last() == '*') && (line[line.lastIndex - 1] == '*') && (line[line.lastIndex - 2] == '*') && (steck.last() == "<i>")) {
+                                it.write("</i>")
+                                steck.removeAt(steck.size - 1)
+                            } else if ((line.last() == '*') && (line[line.lastIndex - 1] == '*') && (line[line.lastIndex - 2] == '*') && (steck.last() != "<i>")) {
+                                it.write("<i>")
+                                steck.add("<i>")
+                            } else if ((line.last() == '*') && (line[line.lastIndex - 1] != '*') && (steck.last() == "<i>")) {
+                                it.write("</i>")
+                                steck.removeAt(steck.size - 1)
+                            } else if (((line.last() == '*') && (line[line.lastIndex - 1] != '*') && (steck.last() != "<i>"))) {
+                                it.write("<i>")
+                                steck.add("<i>")
+                            } else if (line.last() != '*') {
+                                if (line.last() == '~') {
+                                    if (line[line.lastIndex - 1] != '~') it.write(line.last().toString())
+                                } else it.write(line.last().toString())
+                            }
                         }
                     }
                     else if ((steck.last() == "<p>") && (stringCounter > 0)) {
