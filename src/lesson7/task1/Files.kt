@@ -336,7 +336,15 @@ fun markdownToHtmlSimple(inputName: String, outputName: String) {
         File(inputName).forEachLine {line ->
             if (line.length == 1) {
                 stringCounter++
-                it.write(line)
+                if (line == "*") {
+                    if (steck.last() == "<i>") {
+                        it.write("</i>")
+                        steck.removeAt(steck.size - 1)
+                    } else {
+                        it.write("<i>")
+                        steck.add("<i>")
+                    }
+                } else it.write(line)
             } else {
                 if (line.isNotEmpty()) {
                     stringCounter++
