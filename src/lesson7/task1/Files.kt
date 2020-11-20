@@ -329,15 +329,17 @@ fun markdownToHtmlSimple(inputName: String, outputName: String) {
     val steck = mutableListOf<String>("")
     val writer = File(outputName).bufferedWriter()
     writer.use {
+        var stringCounter = 0
         it.write("<html><body>")
         it.write("<p>")
         steck.add("<p>")
-
         File(inputName).forEachLine {line ->
             if (line.length == 1) {
+                stringCounter++
                 it.write(line)
             } else {
                 if (line.isNotEmpty()) {
+                    stringCounter++
                     var i = 0
                     while (i < line.lastIndex) {
                         if (((line[i] == '*') && (line[i + 1] == '*')) && (steck.last() == "<b>")) {
@@ -387,12 +389,14 @@ fun markdownToHtmlSimple(inputName: String, outputName: String) {
                         } else it.write(line.last().toString())
                     }
                 }
-                else if (steck.last() == "<p>") {
+                else if ((steck.last() == "<p>") && (stringCounter > 0)) {
                     it.write("</p>")
                     it.write("<p>")
-                } else {
+                    stringCounter = 0
+                } else if (stringCounter > 0) {
                     it.write("<p>")
                     steck.add("<p>")
+                    stringCounter = 0
                 }
             }
         }
