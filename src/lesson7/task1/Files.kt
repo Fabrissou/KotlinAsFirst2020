@@ -404,7 +404,7 @@ fun markdownToHtmlSimple(inputName: String, outputName: String) {
                             }
                         }
                     }
-                    else if (("<p>" in steck) && (stringCounter > 0)) {
+                    else if ((steck.last() == "<p>") && (stringCounter > 0)) {
                         it.write("</p>")
                         stringCounter = 0
                         steck.removeAt(steck.size - 1)
