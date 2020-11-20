@@ -328,7 +328,7 @@ Suspendisse ~~et elit in enim tempus iaculis~~.
 fun markdownToHtmlSimple(inputName: String, outputName: String) {
     val steck = mutableListOf<String>("")
     val writer = File(outputName).bufferedWriter()
-
+    var paragraph = 0
     writer.use {
         if (File(inputName).length() != 0.toLong()) {
             var stringCounter = 0
@@ -337,7 +337,7 @@ fun markdownToHtmlSimple(inputName: String, outputName: String) {
                 val line = element.trim()
                 if ((stringCounter == 0) && (line.isNotEmpty())) {
                     it.write("<p>")
-                    steck.add("<p>")
+                    paragraph = 1
                 }
                 if (line.length == 1) {
                     stringCounter++
@@ -404,14 +404,14 @@ fun markdownToHtmlSimple(inputName: String, outputName: String) {
                             }
                         }
                     }
-                    else if ((steck.last() == "<p>") && (stringCounter > 0)) {
+                    else if ((paragraph == 1) && (stringCounter > 0)) {
                         it.write("</p>")
                         stringCounter = 0
-                        steck.removeAt(steck.size - 1)
+                        paragraph = 0
                     }
                 }
             }
-            if (steck.last() == "<p>") it.write("</p>")
+            if (paragraph == 1) it.write("</p>")
             it.write("</body></html>")
         } else it.write("<html><body><p></p></body></html>")
 
