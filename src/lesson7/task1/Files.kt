@@ -333,7 +333,8 @@ fun markdownToHtmlSimple(inputName: String, outputName: String) {
         it.write("<html><body>")
         it.write("<p>")
         steck.add("<p>")
-        File(inputName).forEachLine {line ->
+        File(inputName).forEachLine {element ->
+            val line = element.trim()
             if (line.length == 1) {
                 stringCounter++
                 if (line == "*") {
