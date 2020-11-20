@@ -332,59 +332,62 @@ fun markdownToHtmlSimple(inputName: String, outputName: String) {
         it.write("<html><body>")
         it.write("<p>")
         steck.add("<p>")
-        File(inputName).forEachLine { line ->
-            if (line.isNotEmpty() && (line.length > 2)) {
-                var i = 0
-                while (i < line.lastIndex) {
-                    if (((line[i] == '*') && (line[i + 1] == '*')) && (steck.last() == "<b>")) {
-                        it.write("</b>")
-                        steck.removeAt(steck.size - 1)
-                        i += 2
-                    } else if ((line[i] == '*') && (line[i + 1] == '*')) {
-                        it.write("<b>")
-                        steck.add("<b>")
-                        i += 2
-                    } else if ((line[i] == '*') && (steck.last() == "<i>")) {
+
+        File(inputName).forEachLine {line ->
+            if (line.length == 1) {
+                it.write(line)
+            } else {
+                if (line.isNotEmpty()) {
+                    var i = 0
+                    while (i < line.lastIndex) {
+                        if (((line[i] == '*') && (line[i + 1] == '*')) && (steck.last() == "<b>")) {
+                            it.write("</b>")
+                            steck.removeAt(steck.size - 1)
+                            i += 2
+                        } else if ((line[i] == '*') && (line[i + 1] == '*')) {
+                            it.write("<b>")
+                            steck.add("<b>")
+                            i += 2
+                        } else if ((line[i] == '*') && (steck.last() == "<i>")) {
+                            it.write("</i>")
+                            steck.removeAt(steck.size - 1)
+                            i++
+                        } else if (line[i] == '*') {
+                            it.write("<i>")
+                            steck.add("<i>")
+                            i++
+                        } else if (((line[i] == '~') && (line[i + 1] == '~')) && (steck.last() == "<s>")) {
+                            it.write("</s>")
+                            steck.removeAt(steck.size - 1)
+                            i += 2
+                        } else if ((line[i] == '~') && (line[i + 1] == '~')) {
+                            it.write("<s>")
+                            steck.add("<s>")
+                            i += 2
+                        } else {
+                            it.write(line[i].toString())
+                            i++
+                        }
+                    }
+                    if ((line.last() == '*') && (line[line.lastIndex - 1] == '*') && (line[line.lastIndex - 2] == '*') && (steck.last() == "<i>")) {
                         it.write("</i>")
                         steck.removeAt(steck.size - 1)
-                        i++
-                    } else if (line[i] == '*') {
+                    } else if ((line.last() == '*') && (line[line.lastIndex - 1] == '*') && (line[line.lastIndex - 2] == '*') && (steck.last() != "<i>")) {
                         it.write("<i>")
                         steck.add("<i>")
-                        i++
-                    } else if (((line[i] == '~') && (line[i + 1] == '~')) && (steck.last() == "<s>")) {
-                        it.write("</s>")
+                    } else if ((line.last() == '*') && (line[line.lastIndex - 1] != '*') && (steck.last() == "<i>")) {
+                        it.write("</i>")
                         steck.removeAt(steck.size - 1)
-                        i += 2
-                    } else if ((line[i] == '~') && (line[i + 1] == '~')) {
-                        it.write("<s>")
-                        steck.add("<s>")
-                        i += 2
-                    } else {
-                        it.write(line[i].toString())
-                        i++
+                    } else if (((line.last() == '*') && (line[line.lastIndex - 1] != '*') && (steck.last() != "<i>"))) {
+                        it.write("<i>")
+                        steck.add("<i>")
+                    } else if (line.last() != '*') {
+                        if (line.last() == '~') {
+                            if (line[line.lastIndex - 1] != '~') it.write(line.last().toString())
+                        } else it.write(line.last().toString())
                     }
                 }
-                if ((line.last() == '*') && (line[line.lastIndex - 1] == '*') && (line[line.lastIndex - 2] == '*') && (steck.last() == "<i>")) {
-                    it.write("</i>")
-                    steck.removeAt(steck.size - 1)
-                } else if ((line.last() == '*') && (line[line.lastIndex - 1] == '*') && (line[line.lastIndex - 2] == '*') && (steck.last() != "<i>")) {
-                    it.write("<i>")
-                    steck.add("<i>")
-                } else if ((line.last() == '*') && (line[line.lastIndex - 1] != '*') && (steck.last() == "<i>")) {
-                    it.write("</i>")
-                    steck.removeAt(steck.size - 1)
-                } else if (((line.last() == '*') && (line[line.lastIndex - 1] != '*') && (steck.last() != "<i>"))) {
-                    it.write("<i>")
-                    steck.add("<i>")
-                } else if (line.last() != '*') {
-                    if (line.last() == '~') {
-                        if (line[line.lastIndex - 1] != '~') it.write(line.last().toString())
-                    } else it.write(line.last().toString())
-                }
-            } else {
-                if (line.isNotEmpty()) it.write(line)
-                if (steck.last() == "<p>") {
+                else if (steck.last() == "<p>") {
                     it.write("</p>")
                     it.write("<p>")
                 } else {
@@ -392,12 +395,12 @@ fun markdownToHtmlSimple(inputName: String, outputName: String) {
                     steck.add("<p>")
                 }
             }
-
         }
         it.write("</p>")
         it.write("</body></html>")
     }
 }
+
 
 /**
  * Сложная (23 балла)
