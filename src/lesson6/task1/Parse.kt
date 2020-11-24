@@ -3,7 +3,9 @@
 package lesson6.task1
 
 import lesson2.task2.daysInMonth
+import java.lang.IllegalArgumentException
 import java.lang.NumberFormatException
+import kotlin.math.exp
 
 // Урок 6: разбор строк, исключения
 // Максимальное количество баллов = 13
@@ -134,7 +136,12 @@ fun dateDigitToStr(digital: String): String {
  *
  * PS: Дополнительные примеры работы функции можно посмотреть в соответствующих тестах.
  */
-fun flattenPhoneNumber(phone: String): String = TODO()
+fun flattenPhoneNumber(phone: String): String {
+    var answer = phone
+    if (Regex("[^0-9 /(/)/+/-]").containsMatchIn(phone)) return ""
+    answer = Regex("[/ /-]").replace(answer, "")
+    return if ("()" in answer) "" else Regex("[/( /)]").replace(answer, "")
+}
 
 /**
  * Средняя (5 баллов)
@@ -195,7 +202,29 @@ fun bestHighJump(jumps: String): Int {
  * Вернуть значение выражения (6 для примера).
  * Про нарушении формата входной строки бросить исключение IllegalArgumentException
  */
-fun plusMinus(expression: String): Int = TODO()
+fun plusMinus(expression: String): Int {
+    var answer = 0
+    try {
+        val expr = expression.split(" ")
+        if ((expr.size == 1) && (Regex("[^0-9]").containsMatchIn(expr[0]))) throw IllegalArgumentException()
+        else answer = expr[0].toInt()
+        if (expr.size > 2) {
+            for (i in 1..expr.size - 1 step 2) {
+                if ((Regex("[^0-9]").containsMatchIn(expr[i + 1]))) throw IllegalArgumentException()
+                if (expr[i] == "+") answer += expr[i + 1].toInt()
+                    else if (expr[i] == "-") answer -= expr[i + 1].toInt()
+                            else throw IllegalArgumentException()
+            }
+        } else {
+            if (expr.size == 2) throw IllegalArgumentException()
+            if ((expr.size == 1) && (Regex("[^0-9]").containsMatchIn(expr[0]))) throw IllegalArgumentException()
+                else return expr[0].toInt()
+        }
+    } catch (e: NumberFormatException) {
+        throw IllegalArgumentException()
+    }
+    return answer
+}
 
 /**
  * Сложная (6 баллов)
