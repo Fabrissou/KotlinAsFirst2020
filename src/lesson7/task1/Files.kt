@@ -3,6 +3,7 @@
 package lesson7.task1
 
 import java.io.File
+import java.util.Stack
 
 // Урок 7: работа с файлами
 // Урок интегральный, поэтому его задачи имеют сильно увеличенную стоимость
@@ -326,11 +327,13 @@ Suspendisse ~~et elit in enim tempus iaculis~~.
  */
 
 fun markdownToHtmlSimple(inputName: String, outputName: String) {
-    val steck = mutableListOf<String>("")
+    val stack = Stack<String>()
     val writer = File(outputName).bufferedWriter()
     var paragraph = 0
     writer.use {
-        if (File(inputName).length() != 0.toLong()) {
+        if (File(inputName).length() == 0.toLong()) it.write("<html><body><p></p></body></html>")
+        else {
+            stack.push("")
             var stringCounter = 0
             it.write("<html><body>")
             File(inputName).forEachLine {element ->
@@ -342,12 +345,12 @@ fun markdownToHtmlSimple(inputName: String, outputName: String) {
                 if (line.length == 1) {
                     stringCounter++
                     if (line == "*") {
-                        if (steck.last() == "<i>") {
+                        if (stack.peek() == "<i>") {
                             it.write("</i>")
-                            steck.removeAt(steck.size - 1)
+                            stack.pop()
                         } else {
                             it.write("<i>")
-                            steck.add("<i>")
+                            stack.push("<i>")
                         }
                     } else it.write(line)
                 } else {
@@ -355,29 +358,29 @@ fun markdownToHtmlSimple(inputName: String, outputName: String) {
                         stringCounter++
                         var i = 0
                         while (i < line.lastIndex) {
-                            if (((line[i] == '*') && (line[i + 1] == '*')) && (steck.last() == "<b>")) {
+                            if (((line[i] == '*') && (line[i + 1] == '*')) && (stack.peek() == "<b>")) {
                                 it.write("</b>")
-                                steck.removeAt(steck.size - 1)
+                                stack.pop()
                                 i += 2
                             } else if ((line[i] == '*') && (line[i + 1] == '*')) {
                                 it.write("<b>")
-                                steck.add("<b>")
+                                stack.push("<b>")
                                 i += 2
-                            } else if ((line[i] == '*') && (steck.last() == "<i>")) {
+                            } else if ((line[i] == '*') && (stack.peek() == "<i>")) {
                                 it.write("</i>")
-                                steck.removeAt(steck.size - 1)
+                                stack.pop()
                                 i++
                             } else if (line[i] == '*') {
                                 it.write("<i>")
-                                steck.add("<i>")
+                                stack.push("<i>")
                                 i++
-                            } else if (((line[i] == '~') && (line[i + 1] == '~')) && (steck.last() == "<s>")) {
+                            } else if (((line[i] == '~') && (line[i + 1] == '~')) && (stack.peek() == "<s>")) {
                                 it.write("</s>")
-                                steck.removeAt(steck.size - 1)
+                                stack.pop()
                                 i += 2
                             } else if ((line[i] == '~') && (line[i + 1] == '~')) {
                                 it.write("<s>")
-                                steck.add("<s>")
+                                stack.push("<s>")
                                 i += 2
                             } else {
                                 it.write(line[i].toString())
@@ -385,18 +388,18 @@ fun markdownToHtmlSimple(inputName: String, outputName: String) {
                             }
                         }
                         if (line != "**") {
-                            if ((line.last() == '*') && (line[line.lastIndex - 1] == '*') && (line[line.lastIndex - 2] == '*') && (steck.last() == "<i>")) {
+                            if ((line.last() == '*') && (line[line.lastIndex - 1] == '*') && (line[line.lastIndex - 2] == '*') && (stack.peek() == "<i>")) {
                                 it.write("</i>")
-                                steck.removeAt(steck.size - 1)
-                            } else if ((line.last() == '*') && (line[line.lastIndex - 1] == '*') && (line[line.lastIndex - 2] == '*') && (steck.last() != "<i>")) {
+                                stack.pop()
+                            } else if ((line.last() == '*') && (line[line.lastIndex - 1] == '*') && (line[line.lastIndex - 2] == '*') && (stack.peek() != "<i>")) {
                                 it.write("<i>")
-                                steck.add("<i>")
-                            } else if ((line.last() == '*') && (line[line.lastIndex - 1] != '*') && (steck.last() == "<i>")) {
+                                stack.push("<i>")
+                            } else if ((line.last() == '*') && (line[line.lastIndex - 1] != '*') && (stack.peek() == "<i>")) {
                                 it.write("</i>")
-                                steck.removeAt(steck.size - 1)
-                            } else if (((line.last() == '*') && (line[line.lastIndex - 1] != '*') && (steck.last() != "<i>"))) {
+                                stack.pop()
+                            } else if (((line.last() == '*') && (line[line.lastIndex - 1] != '*') && (stack.peek() != "<i>"))) {
                                 it.write("<i>")
-                                steck.add("<i>")
+                                stack.push("<i>")
                             } else if (line.last() != '*') {
                                 if (line.last() == '~') {
                                     if (line[line.lastIndex - 1] != '~') it.write(line.last().toString())
@@ -413,7 +416,7 @@ fun markdownToHtmlSimple(inputName: String, outputName: String) {
             }
             if (paragraph == 1) it.write("</p>")
             it.write("</body></html>")
-        } else it.write("<html><body><p></p></body></html>")
+        }
 
     }
 }
