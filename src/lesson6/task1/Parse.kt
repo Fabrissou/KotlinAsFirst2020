@@ -237,7 +237,7 @@ fun plusMinus(expression: String): Int {
  */
 fun firstDuplicateIndex(str: String): Int {
     var parts = str.split(" ")
-    if (parts.size <= 2) return -1
+    if (parts.size < 2) return -1
         else {
         var index = 0
         for (i in 0..parts.size - 2) {
