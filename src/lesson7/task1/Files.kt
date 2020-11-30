@@ -66,7 +66,7 @@ fun alignFile(inputName: String, lineLength: Int, outputName: String) {
 fun deleteMarked(inputName: String, outputName: String) {
     val answer = File(outputName).bufferedWriter()
     answer.use {
-        File(inputName).forEachLine{el ->
+        File(inputName).forEachLine { el ->
             if (el.isEmpty()) answer.newLine() else {
                 if (el[0] != '_') {
                     it.write(el)
@@ -129,8 +129,8 @@ fun centerFile(inputName: String, outputName: String) {
         if (it.trim().length > maxLine) maxLine = it.trim().length
     }
     writer.use {
-        File(inputName).forEachLine {line ->
-            for (i in 1..(maxLine - line.trim().length)/2) {
+        File(inputName).forEachLine { line ->
+            for (i in 1..(maxLine - line.trim().length) / 2) {
                 it.write(" ")
             }
             writer.write(line.trim())
@@ -312,15 +312,15 @@ Suspendisse ~~et elit in enim tempus iaculis~~.
  *
  * Соответствующий выходной файл:
 <html>
-    <body>
-        <p>
-            Lorem ipsum <i>dolor sit amet</i>, consectetur <b>adipiscing</b> elit.
-            Vestibulum lobortis. <s>Est vehicula rutrum <i>suscipit</i></s>, ipsum <s>lib</s>ero <i>placerat <b>tortor</b></i>.
-        </p>
-        <p>
-            Suspendisse <s>et elit in enim tempus iaculis</s>.
-        </p>
-    </body>
+<body>
+<p>
+Lorem ipsum <i>dolor sit amet</i>, consectetur <b>adipiscing</b> elit.
+Vestibulum lobortis. <s>Est vehicula rutrum <i>suscipit</i></s>, ipsum <s>lib</s>ero <i>placerat <b>tortor</b></i>.
+</p>
+<p>
+Suspendisse <s>et elit in enim tempus iaculis</s>.
+</p>
+</body>
 </html>
  *
  * (Отступы и переносы строк в примере добавлены для наглядности, при решении задачи их реализовывать не обязательно)
@@ -331,95 +331,95 @@ fun markdownToHtmlSimple(inputName: String, outputName: String) {
     val writer = File(outputName).bufferedWriter()
     var paragraph = 0
     writer.use {
-        if (File(inputName).length() == 0.toLong()) it.write("<html><body><p></p></body></html>")
-        else {
-            stack.push("")
-            var stringCounter = 0
-            it.write("<html><body>")
-            File(inputName).forEachLine {element ->
-                val line = element.trim()
-                if ((stringCounter == 0) && (line.isNotEmpty())) {
-                    it.write("<p>")
-                    paragraph = 1
-                }
-                if (line.length == 1) {
+        if (File(inputName).length() == 0.toLong()) {
+            it.write("<html><body><p></p></body></html>")
+            return
+        }
+        stack.push("")
+        var stringCounter = 0
+        it.write("<html><body>")
+        File(inputName).forEachLine { element ->
+            val line = element.trim()
+            if ((stringCounter == 0) && (line.isNotEmpty())) {
+                it.write("<p>")
+                paragraph = 1
+            }
+            if (line.length == 1) {
+                stringCounter++
+                if (line == "*") {
+                    if (stack.peek() == "<i>") {
+                        it.write("</i>")
+                        stack.pop()
+                    } else {
+                        it.write("<i>")
+                        stack.push("<i>")
+                    }
+                } else it.write(line)
+            } else {
+                if (line.isNotEmpty()) {
                     stringCounter++
-                    if (line == "*") {
-                        if (stack.peek() == "<i>") {
+                    var i = 0
+                    while (i < line.lastIndex) {
+                        if (((line[i] == '*') && (line[i + 1] == '*')) && (stack.peek() == "<b>")) {
+                            it.write("</b>")
+                            stack.pop()
+                            i += 2
+                        } else if ((line[i] == '*') && (line[i + 1] == '*')) {
+                            it.write("<b>")
+                            stack.push("<b>")
+                            i += 2
+                        } else if ((line[i] == '*') && (stack.peek() == "<i>")) {
                             it.write("</i>")
                             stack.pop()
-                        } else {
+                            i++
+                        } else if (line[i] == '*') {
                             it.write("<i>")
                             stack.push("<i>")
-                        }
-                    } else it.write(line)
-                } else {
-                    if (line.isNotEmpty()) {
-                        stringCounter++
-                        var i = 0
-                        while (i < line.lastIndex) {
-                            if (((line[i] == '*') && (line[i + 1] == '*')) && (stack.peek() == "<b>")) {
-                                it.write("</b>")
-                                stack.pop()
-                                i += 2
-                            } else if ((line[i] == '*') && (line[i + 1] == '*')) {
-                                it.write("<b>")
-                                stack.push("<b>")
-                                i += 2
-                            } else if ((line[i] == '*') && (stack.peek() == "<i>")) {
-                                it.write("</i>")
-                                stack.pop()
-                                i++
-                            } else if (line[i] == '*') {
-                                it.write("<i>")
-                                stack.push("<i>")
-                                i++
-                            } else if (((line[i] == '~') && (line[i + 1] == '~')) && (stack.peek() == "<s>")) {
-                                it.write("</s>")
-                                stack.pop()
-                                i += 2
-                            } else if ((line[i] == '~') && (line[i + 1] == '~')) {
-                                it.write("<s>")
-                                stack.push("<s>")
-                                i += 2
-                            } else {
-                                it.write(line[i].toString())
-                                i++
-                            }
-                        }
-                        if (line != "**") {
-                            if ((line.last() == '*') && (line[line.lastIndex - 1] == '*') && (line[line.lastIndex - 2] == '*') && (stack.peek() == "<i>")) {
-                                it.write("</i>")
-                                stack.pop()
-                            } else if ((line.last() == '*') && (line[line.lastIndex - 1] == '*') && (line[line.lastIndex - 2] == '*') && (stack.peek() != "<i>")) {
-                                it.write("<i>")
-                                stack.push("<i>")
-                            } else if ((line.last() == '*') && (line[line.lastIndex - 1] != '*') && (stack.peek() == "<i>")) {
-                                it.write("</i>")
-                                stack.pop()
-                            } else if (((line.last() == '*') && (line[line.lastIndex - 1] != '*') && (stack.peek() != "<i>"))) {
-                                it.write("<i>")
-                                stack.push("<i>")
-                            } else if (line.last() != '*') {
-                                if (line.last() == '~') {
-                                    if (line[line.lastIndex - 1] != '~') it.write(line.last().toString())
-                                } else it.write(line.last().toString())
-                            }
+                            i++
+                        } else if (((line[i] == '~') && (line[i + 1] == '~')) && (stack.peek() == "<s>")) {
+                            it.write("</s>")
+                            stack.pop()
+                            i += 2
+                        } else if ((line[i] == '~') && (line[i + 1] == '~')) {
+                            it.write("<s>")
+                            stack.push("<s>")
+                            i += 2
+                        } else {
+                            it.write(line[i].toString())
+                            i++
                         }
                     }
-                    else if ((paragraph == 1) && (stringCounter > 0)) {
-                        it.write("</p>")
-                        stringCounter = 0
-                        paragraph = 0
+                    if (line != "**") {
+                        if ((line.last() == '*') && (line[line.lastIndex - 1] == '*') && (line[line.lastIndex - 2] == '*') && (stack.peek() == "<i>")) {
+                            it.write("</i>")
+                            stack.pop()
+                        } else if ((line.last() == '*') && (line[line.lastIndex - 1] == '*') && (line[line.lastIndex - 2] == '*') && (stack.peek() != "<i>")) {
+                            it.write("<i>")
+                            stack.push("<i>")
+                        } else if ((line.last() == '*') && (line[line.lastIndex - 1] != '*') && (stack.peek() == "<i>")) {
+                            it.write("</i>")
+                            stack.pop()
+                        } else if (((line.last() == '*') && (line[line.lastIndex - 1] != '*') && (stack.peek() != "<i>"))) {
+                            it.write("<i>")
+                            stack.push("<i>")
+                        } else if (line.last() != '*') {
+                            if (line.last() == '~') {
+                                if (line[line.lastIndex - 1] != '~') it.write(line.last().toString())
+                            } else it.write(line.last().toString())
+                        }
                     }
+                } else if ((paragraph == 1) && (stringCounter > 0)) {
+                    it.write("</p>")
+                    stringCounter = 0
+                    paragraph = 0
                 }
             }
-            if (paragraph == 1) it.write("</p>")
-            it.write("</body></html>")
         }
-
+        if (paragraph == 1) it.write("</p>")
+        it.write("</body></html>")
     }
 }
+
 
 
 /**
@@ -456,70 +456,112 @@ fun markdownToHtmlSimple(inputName: String, outputName: String) {
  *
  * Пример входного файла:
 ///////////////////////////////начало файла/////////////////////////////////////////////////////////////////////////////
-* Утка по-пекински
-    * Утка
-    * Соус
-* Салат Оливье
-    1. Мясо
-        * Или колбаса
-    2. Майонез
-    3. Картофель
-    4. Что-то там ещё
-* Помидоры
-* Фрукты
-    1. Бананы
-    23. Яблоки
-        1. Красные
-        2. Зелёные
+ * Утка по-пекински
+ * Утка
+ * Соус
+ * Салат Оливье
+1. Мясо
+ * Или колбаса
+2. Майонез
+3. Картофель
+4. Что-то там ещё
+ * Помидоры
+ * Фрукты
+1. Бананы
+23. Яблоки
+1. Красные
+2. Зелёные
 ///////////////////////////////конец файла//////////////////////////////////////////////////////////////////////////////
  *
  *
  * Соответствующий выходной файл:
 ///////////////////////////////начало файла/////////////////////////////////////////////////////////////////////////////
 <html>
-  <body>
-    <p>
-      <ul>
-        <li>
-          Утка по-пекински
-          <ul>
-            <li>Утка</li>
-            <li>Соус</li>
-          </ul>
-        </li>
-        <li>
-          Салат Оливье
-          <ol>
-            <li>Мясо
-              <ul>
-                <li>Или колбаса</li>
-              </ul>
-            </li>
-            <li>Майонез</li>
-            <li>Картофель</li>
-            <li>Что-то там ещё</li>
-          </ol>
-        </li>
-        <li>Помидоры</li>
-        <li>Фрукты
-          <ol>
-            <li>Бананы</li>
-            <li>Яблоки
-              <ol>
-                <li>Красные</li>
-                <li>Зелёные</li>
-              </ol>
-            </li>
-          </ol>
-        </li>
-      </ul>
-    </p>
-  </body>
+<body>
+<p>
+<ul>
+<li>
+Утка по-пекински
+<ul>
+<li>Утка</li>
+<li>Соус</li>
+</ul>
+</li>
+<li>
+Салат Оливье
+<ol>
+<li>Мясо
+<ul>
+<li>Или колбаса</li>
+</ul>
+</li>
+<li>Майонез</li>
+<li>Картофель</li>
+<li>Что-то там ещё</li>
+</ol>
+</li>
+<li>Помидоры</li>
+<li>Фрукты
+<ol>
+<li>Бананы</li>
+<li>Яблоки
+<ol>
+<li>Красные</li>
+<li>Зелёные</li>
+</ol>
+</li>
+</ol>
+</li>
+</ul>
+</p>
+</body>
 </html>
 ///////////////////////////////конец файла//////////////////////////////////////////////////////////////////////////////
  * (Отступы и переносы строк в примере добавлены для наглядности, при решении задачи их реализовывать не обязательно)
  */
+fun nestingLevel(string: String): Int {
+    var count = 0
+    string.forEach {
+        if (it == ' ') count += 1 else return count / 4
+    }
+    return count / 4
+}
+
 fun markdownToHtmlLists(inputName: String, outputName: String) {
+//    val stack = Stack<String>()
+//    stack.push("")
+//    val writer = File(outputName).bufferedWriter()
+//    var level: Int
+//    var prevLevel = -1
+//    writer.use {
+//        it.write("<html><body><p>")
+//
+//        File(inputName).forEachLine { line ->
+//            level = nestingLevel(line)
+//
+//            if (level == prevLevel) {
+//                if (stack.peek() == "<ul>") {
+//                    it.write("<li>" + line.trim().substring(1))
+//                }
+//
+//
+//
+//
+//            } else {
+//
+//            }
+//
+//
+//
+//
+//
+//
+//
+//            prevLevel = nestingLevel(line)
+//        }
+//
+//        it.write("</p></body></html>")
+//    }
     TODO()
 }
 
@@ -541,23 +583,23 @@ fun markdownToHtml(inputName: String, outputName: String) {
  * Вывести в выходной файл процесс умножения столбиком числа lhv (> 0) на число rhv (> 0).
  *
  * Пример (для lhv == 19935, rhv == 111):
-   19935
-*    111
+19935
+ *    111
 --------
-   19935
+19935
 + 19935
 +19935
 --------
- 2212785
+2212785
  * Используемые пробелы, отступы и дефисы должны в точности соответствовать примеру.
  * Нули в множителе обрабатывать так же, как и остальные цифры:
-  235
-*  10
+235
+ *  10
 -----
-    0
+0
 +235
 -----
- 2350
+2350
  *
  */
 fun printMultiplicationProcess(lhv: Int, rhv: Int, outputName: String) {
@@ -571,16 +613,16 @@ fun printMultiplicationProcess(lhv: Int, rhv: Int, outputName: String) {
  * Вывести в выходной файл процесс деления столбиком числа lhv (> 0) на число rhv (> 0).
  *
  * Пример (для lhv == 19935, rhv == 22):
-  19935 | 22
- -198     906
- ----
-    13
-    -0
-    --
-    135
-   -132
-   ----
-      3
+19935 | 22
+-198     906
+----
+13
+-0
+--
+135
+-132
+----
+3
 
  * Используемые пробелы, отступы и дефисы должны в точности соответствовать примеру.
  *
