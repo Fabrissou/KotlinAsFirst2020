@@ -347,28 +347,4 @@ fun findSumOfTwo(list: List<Int>, number: Int): Pair<Int, Int> {
  *     450
  *   ) -> emptySet()
  */
-class Treasure(val name: String, val weight: Int, val cost: Int) {
-    val coefficient = cost.toDouble() / weight.toDouble()
-}
-
-fun bagPacking(treasures: Map<String, Pair<Int, Int>>, capacity: Int): Set<String> {
-    if (treasures.isEmpty()) return emptySet()
-
-    val listOfTreasures = mutableListOf<Treasure>()
-    val answer = mutableSetOf<String>()
-
-    treasures.forEach {key, value ->
-        listOfTreasures.add(Treasure(key, value.first, value.second))
-    }
-
-    listOfTreasures.sortByDescending{ it.coefficient }
-
-    var _capacity = capacity
-    listOfTreasures.forEach {
-        if (_capacity - it.weight >= 0) {
-            _capacity -= it.weight
-            answer.add(it.name)
-        }
-    }
-    return answer
-}
+fun bagPacking(treasures: Map<String, Pair<Int, Int>>, capacity: Int): Set<String> = TODO()
