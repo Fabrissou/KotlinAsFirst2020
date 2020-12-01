@@ -527,43 +527,65 @@ fun nestingLevel(string: String): Int {
     return count / 4
 }
 
-fun markdownToHtmlLists(inputName: String, outputName: String) {
-//    val stack = Stack<String>()
-//    stack.push("")
-//    val writer = File(outputName).bufferedWriter()
-//    var level: Int
-//    var prevLevel = -1
-//    writer.use {
-//        it.write("<html><body><p>")
-//
-//        File(inputName).forEachLine { line ->
-//            level = nestingLevel(line)
-//
-//            if (level == prevLevel) {
-//                if (stack.peek() == "<ul>") {
-//                    it.write("<li>" + line.trim().substring(1))
-//                }
-//
-//
-//
-//
-//            } else {
-//
-//            }
-//
-//
-//
-//
-//
-//
-//
-//            prevLevel = nestingLevel(line)
-//        }
-//
-//        it.write("</p></body></html>")
-//    }
-    TODO()
+fun onlyStr(a: String): String {
+    return if (a.trim()[0] == '*') {
+        a.trimStart().substring(2)
+    } else a.substring(a.indexOf('.') + 2)
 }
+
+fun markdownToHtmlLists(inputName: String, outputName: String) {
+    val stack = Stack<String>()
+    stack.push("")
+    val writer = File(outputName).bufferedWriter()
+    var level: Int
+    var prevLevel = -1
+    writer.use {
+        it.write("<html><body><p>")
+        File(inputName).forEachLine { line ->
+            level = nestingLevel(line)
+            if (level > prevLevel) {
+                if (line.trimStart()[0] == '*') {
+                    it.write("<ul><li>" + onlyStr(line))
+                    stack.push("<ul>")
+                    stack.push("<li>")
+                } else {
+                    it.write("<ol><li>" + onlyStr(line))
+                    stack.push("<ol>")
+                    stack.push("<li>")
+                }
+            } else if (level == prevLevel) {
+                if (stack.peek() == "<li>") {
+                    it.write("</li>" + "<li>" + onlyStr(line))
+                }
+            } else if (level < prevLevel) {
+                it.write("</li>")
+                stack.pop()
+                if (stack.peek() == "<ul>") {
+                    it.write("</ul>")
+                    stack.pop()
+                } else {
+                    it.write("</ol>")
+                    stack.pop()
+                }
+                if (stack.peek() == "<li>") {
+                    it.write("</li>")
+                    stack.pop()
+                }
+                it.write("<li>" + onlyStr(line))
+                stack.push("<li>")
+            }
+            prevLevel = nestingLevel(line)
+        }
+        while (stack.isNotEmpty()) {
+            if (stack.peek() == "<li>") it.write("</li>")
+            if (stack.peek() == "<ul>") it.write("</ul>")
+            if (stack.peek() == "<ol>") it.write("</ol>")
+            stack.pop()
+        }
+        it.write("</p></body></html>")
+    }
+}
+
 
 /**
  * Очень сложная (30 баллов)
