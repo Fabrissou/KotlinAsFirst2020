@@ -3,6 +3,7 @@
 package lesson5.task1
 
 import ru.spbstu.wheels.sorted
+import java.lang.Integer.max
 
 // Урок 5: ассоциативные массивы и множества
 // Максимальное количество баллов = 14
@@ -347,4 +348,40 @@ fun findSumOfTwo(list: List<Int>, number: Int): Pair<Int, Int> {
  *     450
  *   ) -> emptySet()
  */
-fun bagPacking(treasures: Map<String, Pair<Int, Int>>, capacity: Int): Set<String> = TODO()
+
+class Treasure(val name: String, val weight: Int, val cost: Int)
+
+fun bagPacking(treasures: Map<String, Pair<Int, Int>>, capacity: Int): Set<String> {
+
+    val answer = mutableSetOf<String>()
+    val treasuresList = mutableListOf<Treasure>()
+
+    treasures.forEach {key, value ->
+        treasuresList.add(Treasure(key, value.first, value.second))
+    }
+
+    val treasuresTable = Array(treasuresList.size + 1) { Array(capacity + 1) { 0 } }
+
+    for (i in 1..treasuresList.size) {
+        for (j in 1..capacity) {
+            if (j >= treasuresList[i - 1].weight) treasuresTable[i][j] =
+                    max(treasuresTable[i - 1][j], treasuresTable[i - 1][j - treasuresList[i - 1].weight] + treasuresList[i - 1].cost)
+            else treasuresTable[i][j] = treasuresTable[i - 1][j]
+        }
+    }
+
+    fun result(i: Int, j: Int) {
+        if (treasuresTable[i][j] == 0) return
+        if (treasuresTable[i - 1][j] == treasuresTable[i][j]) result(i - 1, j)
+        else {
+            result(i - 1, j - treasuresList[i - 1].weight)
+            answer += treasuresList[i - 1].name
+        }
+    }
+
+    result(treasuresList.size, capacity)
+
+    return answer
+}
+
+
